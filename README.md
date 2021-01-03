@@ -2,6 +2,7 @@
 
 React NoteBook Application for gathering thoughts and decluttering mind.
 
+![](docs/notebook.gif)
 
 ## Overview
 
