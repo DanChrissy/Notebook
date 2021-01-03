@@ -47,6 +47,7 @@ Taking notes is a great way to make sure we keep track of our thoughts or rememb
 - [ ] Add tags or categories
 - [ ] Add note search
 - [ ] Add note network 
+- [ ] Dark Theme
 
 
 
