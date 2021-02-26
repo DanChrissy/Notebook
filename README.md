@@ -38,6 +38,22 @@ Taking notes is a great way to make sure we keep track of our thoughts or rememb
 - https://www.freecodecamp.org/news/8-reactjs-project-ideas-to-start-learning-by-doing/#notebook
 - https://www.pinterest.com/pin/238831586479418377/
 
+## COMPONENTS
+- [ ] SideMenu
+    - [ ] Profile
+    - [ ] Search
+    - [ ] List
+        - [ ] Header
+        - [ ] Item
+    - [ ] Theme Toggle   
+- [ ] Content
+    - [ ] Breadcrumbs
+    - [ ] Note
+        - [ ] Hover Formatter 
+    - [ ] Form
+    - [ ] Dropdown Menu
+    - [ ] Modal
+ 
 
 ## TODO
 - [ ] Create a form
@@ -48,9 +64,3 @@ Taking notes is a great way to make sure we keep track of our thoughts or rememb
 - [ ] Add note search
 - [ ] Add note network 
 - [ ] Dark Theme
-
-
-
-
-
-
