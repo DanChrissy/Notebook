@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import Breadcrumbs from '../../../components/Breadcrumb';
+import HoverFormatter from "../../../components/HoverFormatter";
 
 const Content = () => {
     return (
         <ContentWrapper>
             <ContentContainer>
-
+                <Breadcrumbs/>
+                <HoverFormatter/>
             </ContentContainer>
         </ContentWrapper>
     )
@@ -22,5 +25,5 @@ const ContentWrapper = styled.div`
 const ContentContainer = styled.div`
     height: 100%;
     width: inherit;
-    background-color: gray;
+    background-color: white;
 `;
