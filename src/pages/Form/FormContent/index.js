@@ -5,7 +5,7 @@ const FormContent = () => {
     return (
         <ContentWrapper>
             <ContentContainer>
-                hello
+                
             </ContentContainer>
         </ContentWrapper>
     )
@@ -14,6 +14,9 @@ const FormContent = () => {
 export default FormContent;
 
 const ContentWrapper = styled.div`
+    width: 100%;
+    /* height: 60rem; */
+    background-color: green;
 `;
 
 const ContentContainer = styled.div`

@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 const Input = ({type = 'text', label="Title", onChange = () => {}, ...defaultProps }) => {
     const { multiLine } = defaultProps;
     return (
-        <InputWrapper>
+        <InputWrapper multiLine={multiLine}>
             <InputContainer multiLine={multiLine}>
                 <span className="input-label">{label}</span>
                 {
@@ -22,6 +22,10 @@ export default Input;
 const InputWrapper = styled.div`
     width: 100%;
     height: 2rem;
+
+    ${props => props.multiLine && css`
+        height: max-content;
+    `}
 `;
 
 const InputContainer = styled.div`
@@ -31,13 +35,6 @@ const InputContainer = styled.div`
 
     height: 100%;
     width: 50%;
-
-    ${props => props.multiLine && css`
-        flex-direction: column;
-        align-items: flex-start;
-
-        height: max-content;
-    `}
 
     .input-label {
         width: 8rem;

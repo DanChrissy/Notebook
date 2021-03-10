@@ -2,11 +2,11 @@ import React from "react";
 import ListItem from "../ListItem";
 import folderIcon from '../../assets/svg/folder.svg';
 
-const Notebook = () => {
+const Notebook = ({name = ""}) => {
     return (
         <ListItem
             icon={folderIcon}
-            name="BookShelf"
+            name={name}
             onClick={() => {}}
         />
     )

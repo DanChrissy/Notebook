@@ -1,11 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import createIcon from '../../../assets/svg/create.svg';
+import trashIcon from '../../../assets/svg/trash.svg';
 import Bookmark from "../../../components/Bookmark";
 import ListItem from "../../../components/ListItem";
 import Notebook from "../../../components/Notebook";
 import Profile from "../../../components/Profile";
 import Search from "../../../components/Search";
+import Bookmarks from "./Bookmarks";
+import Notebooks from "./Notebooks";
+
+const TEST_BOOKMARKS = [
+    { name: 'The Obstacle is The Way' },
+    { name: 'Carrot Cake' },
+    { name: 'Bundt Cake' },
+    { name: 'To Do List' },
+];
+
+const TEST_NOTEBOOKS = [
+    { name: 'Bookshelf' },
+    { name: 'Journal' },
+    { name: 'Health' },
+    { name: 'Ideas' },
+    { name: 'Travelling' },
+];
 
 const SideBar = () => {
     return (
@@ -20,9 +38,26 @@ const SideBar = () => {
                     </div>
                 </SideBarHeader>
 
-                <Bookmark/>
-                <Notebook/>
-                <ListItem icon={createIcon} name="Add Note or Notebook" create/>
+                <SideBarContent>
+                    <div className="section">
+                        <p className="section-header">BOOKMARKS</p>
+                        <Bookmarks bookmarks={[...TEST_BOOKMARKS]}/>
+                    </div>
+
+                    <div className="section">
+                        <p className="section-header">NOTEBOOKS</p>
+                        <Notebooks notebooks={[...TEST_NOTEBOOKS]}/>
+                    </div>
+
+                    <div className="content-items">
+                        <span className="trash">
+                            <ListItem icon={trashIcon} name="Trash"/>
+                        </span>
+                        <ListItem icon={createIcon} name="Add Note or Notebook" create/>
+                    </div>
+                    
+                </SideBarContent>
+                <SideBarFooter/>
 
             </SideBarContainer>
         </SideBarWrapper>
@@ -37,11 +72,13 @@ const SideBarWrapper = styled.div`
 `;
 
 const SideBarContainer = styled.div`
+    flex: 1;
     height: 100%;
     width:100%;
+    position: relative;
 
     padding-top: 2.5rem;
-    /* background: #fff9f4; */
+    background: #fffcf5;
 `;
 
 const SideBarHeader = styled.div`
@@ -56,4 +93,44 @@ const SideBarHeader = styled.div`
     }
 `;
 
-const SideBarFooter = styled.div``;
+const SideBarContent = styled.div`
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-24);
+    height: 43rem;
+    overflow: scroll;
+
+    .section {
+        margin-bottom: 1.6rem;
+    }
+    .section-header {
+        text-transform: uppercase;
+        color: var(--color-gray-400);
+        font-weight: bold;
+        font-size: var(--font-14);
+
+        margin: 0;
+        margin-left: var(--space-32);
+        padding-bottom: var(--space-10);
+    }
+
+    .content-items {
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        justify-content:flex-end;
+
+        .trash {
+            margin-bottom: var(--space-24);
+        }
+    }
+
+`;
+
+const SideBarFooter = styled.div`
+    position: absolute;
+    bottom: 0;
+    height: 8rem;
+    width: 100%;
+`;
