@@ -5,8 +5,10 @@ import SideBar from "./SideBar";
 import Modal from "../../components/Modal";
 import Form from "../../pages/Form";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
+import mockData from '../../notebooks.json';
 
 const HorizontalLayout = () => {
+    const noteBooks = mockData.notebooks; 
     const modalRef = useRef();
     const [modalOpen, setMddalOpen] = useState(false);
     useOnClickOutside(modalRef, () => setMddalOpen(false));
@@ -18,7 +20,7 @@ const HorizontalLayout = () => {
     return (
         <LayoutWrapper>
             <LayoutContainer>
-                <SideBar handleCreateNote={handleCreateNote}/>
+                <SideBar handleCreateNote={handleCreateNote} data={noteBooks}/>
                 <Content/>
                 {modalOpen && 
                     <Modal>

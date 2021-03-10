@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import Notebook from "../../../../components/Notebook";
 
-const Notebooks = ({ notebooks = []}) => {
+const Notebooks = ({ notebooks = [], handleSelectNotebook}) => {
     return (
         <NotebooksWrapper>
             <NotebooksContainer>
                 {notebooks.map((notebook,index) => {
                     return (
-                        <Notebook key={index} name={notebook?.name}/>
+                        <Notebook 
+                            key={index} 
+                            name={notebook?.name}
+                            handleSelectNotebook={() => handleSelectNotebook(notebook?.id)}
+                        />
                     )
                 })}
             </NotebooksContainer>

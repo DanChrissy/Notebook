@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import createIcon from '../../../assets/svg/create.svg';
 import trashIcon from '../../../assets/svg/trash.svg';
@@ -25,7 +25,21 @@ const TEST_NOTEBOOKS = [
     { name: 'Travelling' },
 ];
 
-const SideBar = ({handleCreateNote}) => {
+const SideBar = ({handleCreateNote, data}) => {
+    const [notebooks, setNotebooks] = useState(data);
+    const [selectedNotebook, setSelectedNotebook] = useState({});
+
+    useEffect(() => {
+        setSelectedNotebook(notebooks[0]);
+    },[])
+
+    const bookmarks = selectedNotebook?.bookmarks || [];
+
+    const handleSelectNotebook = id => {
+        const selected = notebooks.find(note => note?.id === id);
+        setSelectedNotebook(selected);
+    }
+    
     return (
         <SideBarWrapper>
             <SideBarContainer>
@@ -41,12 +55,12 @@ const SideBar = ({handleCreateNote}) => {
                 <SideBarContent>
                     <div className="section">
                         <p className="section-header">BOOKMARKS</p>
-                        <Bookmarks bookmarks={[...TEST_BOOKMARKS]}/>
+                        <Bookmarks bookmarks={[...bookmarks]}/>
                     </div>
 
                     <div className="section">
                         <p className="section-header">NOTEBOOKS</p>
-                        <Notebooks notebooks={[...TEST_NOTEBOOKS]}/>
+                        <Notebooks notebooks={[...notebooks]} handleSelectNotebook={handleSelectNotebook}/>
                     </div>
 
                     <div className="content-items">

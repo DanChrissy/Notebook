@@ -1,0 +1,86 @@
+{
+    "notebooks" : [
+        {
+            "id": 1,
+            "name": "Bookshelf",
+            "bookmarks" : [
+                {
+                    "id" : 1,
+                    "name": "The Obstacle is The Way"
+                },
+                {
+                    "id" : 2,
+                    "name": "Path to Redemption"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Health",
+            "bookmarks" : [
+                {
+                    "id" : 1,
+                    "name": "Carrot Cake"
+                },
+                {
+                    "id" : 2,
+                    "name": "Bundt Cake"
+                },
+                {
+                    "id" : 3,
+                    "name": "Exercise Schedule"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Journal",
+            "bookmarks" : [
+                {
+                    "id" : 1,
+                    "name": "Busy Day"
+                },
+                {
+                    "id" : 2,
+                    "name": "Sad Day"
+                },
+                {
+                    "id" : 3,
+                    "name": "Happy Day"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Ideas",
+            "bookmarks" : [
+                {
+                    "id" : 1,
+                    "name": "Book Club"
+                },
+                {
+                    "id" : 2,
+                    "name": "Spa Day"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Travelling",
+            "bookmarks" : [
+                {
+                    "id" : 1,
+                    "name": "Bahamas Trip"
+                },
+                {
+                    "id" : 2,
+                    "name": "New York Trip"
+                },
+                {
+                    "id" : 3,
+                    "name": "Hotel Week"
+                }
+            ]
+        }
+    ]
+}

@@ -27,4 +27,5 @@ const ContentContainer = styled.div`
     height: 100%;
     width: inherit;
     background-color: white;
+    padding-left: var(--space-40);
 `;
