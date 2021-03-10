@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Breadcrumbs from '../../../components/Breadcrumb';
+import Form from "../../../pages/Form";
 import HoverFormatter from "../../../components/HoverFormatter";
 
 const Content = () => {
@@ -9,6 +10,7 @@ const Content = () => {
             <ContentContainer>
                 <Breadcrumbs/>
                 <HoverFormatter/>
+                <Form/>
             </ContentContainer>
         </ContentWrapper>
     )

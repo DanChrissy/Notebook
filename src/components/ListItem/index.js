@@ -4,6 +4,7 @@ import fileIcon from '../../assets/svg/file.svg';
 import { ReactComponent as FileIcon } from "../../assets/svg/file.svg";
 
 const ListItem = ({icon = FileIcon, name = "", onClick = () => {}, ...defaultProps}) => {
+    const { create } = defaultProps;
     return (
         <ItemButton type="button" onClick={() => onClick()} {...defaultProps}>
             <ButtonIcon src={icon} {...defaultProps}/>

@@ -24,7 +24,7 @@ const BreadCrumbsWrapper = styled.div`
 
 const BreadCrumb = styled.p`
     color: var(--color-gray-500);
-    font-size: var(--font-16);
+    font-size: var(--font-12);
     &:not(:last-child):after{
         content: ' / ';
         padding-right: var(--space-4);
