@@ -1,34 +1,23 @@
 import React from "react";
 import styled, { css } from 'styled-components';
 
-const Input = ({type = 'text', label, onChange = () => {}, ...defaultProps }) => {
-    const { multiLine, rows = 4 } = defaultProps;
+const TextArea = ({label, onChange = () => {}, ...defaultProps }) => {
+    const { rows = 4 } = defaultProps;
     return (
         <InputWrapper>
             <InputContainer rows={rows}>
                 {label && <span className="input-label">{label}</span>}
-                {
-                    multiLine ? <textarea className="input-container textarea"></textarea> :
-                    <input className="input-container" type={type} onChange={onChange}/>
-                }
-                
+                <textarea className="input-container textarea" rows='10' cols='10'></textarea>
             </InputContainer>
         </InputWrapper>
     )
 }
 
-export default Input;
+export default TextArea;
 
 const InputWrapper = styled.div`
     width: 100%;
-    /* height: 2rem; */
     margin-bottom: var(--space-4);
-
-    ${props => props.multiLine && css`
-        /* height: max-content;
-        height: 4rem; */
-        background: red;
-    `}
 `;
 
 const InputContainer = styled.div`
@@ -37,7 +26,7 @@ const InputContainer = styled.div`
     align-items: center;
 
     height: 100%;
-    width: 100%;
+    width: 70%;
 
     .input-label {
         width: 8rem;

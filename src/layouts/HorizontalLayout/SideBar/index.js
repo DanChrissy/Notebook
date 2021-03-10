@@ -25,7 +25,7 @@ const TEST_NOTEBOOKS = [
     { name: 'Travelling' },
 ];
 
-const SideBar = () => {
+const SideBar = ({handleCreateNote}) => {
     return (
         <SideBarWrapper>
             <SideBarContainer>
@@ -53,10 +53,11 @@ const SideBar = () => {
                         <span className="trash">
                             <ListItem icon={trashIcon} name="Trash"/>
                         </span>
-                        <ListItem icon={createIcon} name="Add Note or Notebook" create/>
+                        <ListItem icon={createIcon} name="Add Note or Notebook" create onClick={handleCreateNote}/>
                     </div>
                     
                 </SideBarContent>
+                
                 <SideBarFooter/>
 
             </SideBarContainer>
