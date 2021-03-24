@@ -5,7 +5,7 @@ import SideBar from "./SideBar";
 import Modal from "../../components/Modal";
 import Form from "../../pages/Form";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
-import mockData from '../../notebooks.json';
+import mockData from '../../mockData/notebooks.json';
 
 const HorizontalLayout = () => {
     const noteBooks = mockData.notebooks; 

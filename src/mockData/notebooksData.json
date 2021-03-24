@@ -1,0 +1,34 @@
+{
+    "notebooks" : [
+        {
+            "id": 1,
+            "name": "Bookshelf",
+            "notes": [1],
+            "bookmarks": []
+        },
+        {
+            "id": 2,
+            "name": "Health",
+            "notes": [2],
+            "bookmarks": [1]
+        },
+        {
+            "id": 3,
+            "name": "Journal",
+            "notes": [3],
+            "bookmarks" : [2]
+        },
+        {
+            "id": 4,
+            "name": "Ideas",
+            "notes": [4],
+            "bookmarks" : []
+        },
+        {
+            "id": 5,
+            "name": "Travelling",
+            "notes": [5, 6],
+            "bookmarks" : [3]
+        }
+    ]
+}
