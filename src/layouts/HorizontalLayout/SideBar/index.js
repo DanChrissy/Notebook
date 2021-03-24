@@ -11,9 +11,9 @@ import Search from "../../../components/Search";
 import Bookmarks from "./Bookmarks";
 import Notebooks from "./Notebooks";
 
-const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, notebooks, bookmarks = [] }) => {
+const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectBookmark, notebooks, bookmarks = [] }) => {
     const formattedBookmarks = bookmarks.map(item => item?.note || {});
-   
+
     return (
         <SideBarWrapper>
             <SideBarContainer>
@@ -27,12 +27,12 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, note
                 </SideBarHeader>
 
                 <SideBarContent>
-                    <div className="section">
+                    <div className="section bookmarks">
                         <p className="section-header">BOOKMARKS</p>
-                        <Bookmarks bookmarks={[...formattedBookmarks]} handleSelectBookmark={handleSelectNote}/>
+                        <Bookmarks bookmarks={[...formattedBookmarks]} handleSelectBookmark={handleSelectBookmark}/>
                     </div>
 
-                    <div className="section">
+                    <div className="section notebooks">
                         <p className="section-header">NOTEBOOKS</p>
                         <Notebooks notebooks={[...notebooks]} handleSelectNotebook={handleSelectNotebook}/>
                     </div>
@@ -92,6 +92,11 @@ const SideBarContent = styled.div`
 
     .section {
         margin-bottom: 1.6rem;
+    }
+
+    .bookmarks {
+        height: 10rem;
+        overflow: auto;
     }
     .section-header {
         text-transform: uppercase;

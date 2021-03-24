@@ -1,6 +1,6 @@
 import Input from '../Input';
 
-export function HeaderInput({value = "", onChange}) {
+export function HeaderInput({value = "", onChange, ...defaultProps}) {
     return (
         <Input
             type="text"
@@ -15,30 +15,32 @@ export function HeaderInput({value = "", onChange}) {
                 background: 'transparent'
 
             }}
+            {...defaultProps}
         />
     )
 };
 
-export function SubHeader({value, onChange}) {
+export function SubHeader({value, onChange, ...defaultProps}) {
     return (
         <Input
-        type="text"
-        onChange={onChange}
-        value={value}
-        style={{
-            height: 'max-content',
-            fontSize:' var(--font-28)',
-            fontWeight: '500',
-            padding: 0,
-            border: 'none',
-            background: 'transparent'
+            type="text"
+            onChange={onChange}
+            value={value}
+            style={{
+                height: 'max-content',
+                fontSize:' var(--font-28)',
+                fontWeight: '500',
+                padding: 0,
+                border: 'none',
+                background: 'transparent'
 
-        }}
+            }}
+            {...defaultProps}
         />
     )
 }
 
-export function MuliLineInput({value, onChange, rows = 2}) {
+export function MuliLineInput({value, onChange, rows = 2, styleProps, ...defaultProps}) {
     return (
         <Input
             multiLine
@@ -46,11 +48,13 @@ export function MuliLineInput({value, onChange, rows = 2}) {
             value={value}
             onChange={onChange}
             style={{
-                fontSize: 'var(--font-16)',
+                fontSize: 'var(--font-20)',
                 padding: 0,
                 border: 'none',
-                // background: 'transparent'
+                background: 'transparent',
+                ...styleProps
             }}
+            {...defaultProps}
         />
     )
 }

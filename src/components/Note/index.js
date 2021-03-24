@@ -2,26 +2,29 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 import { HeaderInput, MuliLineInput, SubHeader} from './noteInputs';
 import { Space } from '../Space';
+import Input from '../Input';
 
 export default function Note({noteValues = {}, handleUpdateNoteValues = () => {}}) {
-    console.log('Notevalues: ', noteValues);
     return (
         <NoteWrapper>
             <NoteContainer>
                 <HeaderInput
                     value={noteValues?.title || ''}
                     onChange={(e) => handleUpdateNoteValues(e, 'title')}
+                    placeholder="Note title"
                 />
                 <Space/>
                 <SubHeader
                     value={noteValues?.subtitle || ''}
                     onChange={(e) => handleUpdateNoteValues(e, 'subtitle')}
+                    placeholder="Subtitle"
                 />
                 <Space/>
                 <DescriptionWrapper>
                     <MuliLineInput
                         value={noteValues?.description || ''}
                         onChange={(e) => handleUpdateNoteValues(e, 'description')}
+                        placeholder="Add a Description"
                     />
                 </DescriptionWrapper>
                 <Space/>
@@ -30,7 +33,9 @@ export default function Note({noteValues = {}, handleUpdateNoteValues = () => {}
                     <MuliLineInput
                         value={noteValues?.body || ''}
                         onChange={(e) => handleUpdateNoteValues(e, 'body')}
-                        rows={20}
+                        rows={30}
+                        styleProps={{fontSize: 'var(--font-20)'}}
+                        placeholder="Add some details..."
                     />
                 </Body>
                 
@@ -59,5 +64,5 @@ const DescriptionWrapper = styled.div`
 
 const Body = styled.div`
     flex: 1;
-    background: red;
+    height: 100%;
 `;

@@ -8,21 +8,32 @@ import useOnClickOutside from "../../hooks/useOnClickOutside";
 import mockData from '../../mockData/notebooks.json';
 import { getNotes } from "../../store/notesStore";
 import { getNotebooks } from "../../store/notebooksStore";
-import { getBookmarks } from "../../store/bookmarksStore";
-import { useSelector } from "react-redux";
+import { getBookmarks, setBookmarks } from "../../store/bookmarksStore";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const HorizontalLayout = () => {
-
+    const dispatch = useDispatch();
     const notesState = useSelector(getNotes);
     const notebooksState = useSelector(getNotebooks);
     const bookmarksState = useSelector(getBookmarks);
 
     const modalRef = useRef();
+
+    const [selectedNotebook, setSelectedNotebook] = useState({});
     const [selectedNote, setSelectedNote] = useState({});
     const [notebookBookmarks, setNotebookBookmarks] = useState([]);
     const [modalOpen, setMddalOpen] = useState(false);
+    const [breadCrumbHistory, setBreadCrumbHistory] = useState({});
+    
     useOnClickOutside(modalRef, () => setMddalOpen(false));
+
+    useEffect(() => {
+        if (breadCrumbHistory?.notebook !== selectedNotebook?.name) {
+            setBreadCrumbHistory({notebook: selectedNotebook?.name})
+        }
+        // setBreadCrumbHistory({ notebook: selectedNotebook?.name});
+    }, [selectedNotebook])
 
     const handleCreateNote = () => {
         setMddalOpen(true);
@@ -31,16 +42,35 @@ const HorizontalLayout = () => {
     const handleSelectNotebook = id => {
         const bookmarks = bookmarksState.filter(bookmark => bookmark.notebook === id);
         setNotebookBookmarks(bookmarks);
+
+        const notebook = notebooksState.find(item => item?.id === id);
+        setSelectedNotebook(notebook);
+        // const newBreadCrumb = breadCrumbHistory?.notebook === notebook.name;
+        // // console.log('Breadcrumb histor: ', breadCrumbHistory?.notebook, notebook.name,  breadCrumbHistory?.notebook === notebook.name );
+        // const updatedBreadcrumb = newBreadCrumb ? { notebook: notebook?.name } : {...breadCrumbHistory, notebook: notebook?.name}
+        // setBreadCrumbHistory(updatedBreadcrumb);
     }
 
     const handleSelectNote = id => {
         const note = notesState.find(noteItem => noteItem?.id === id);
         setSelectedNote(note);
+
+        const updatedBreadcrumb = {
+            ...breadCrumbHistory,
+            note: note?.title
+        }
+        setBreadCrumbHistory(updatedBreadcrumb);
     }
-    
-    // console.log('Notes:', notesState);
-    // console.log('Notebooks:', notebooksState);
-    // console.log('Bookmarks:', bookmarksState);
+
+    const handleSelectBookmark = id => {
+        handleSelectNote(id);
+    }
+
+    const toggleBookMark = () => {
+        console.log('Selected note: ', selectedNote);
+        const updatedBookMarks = bookmarksState.filter(bookmark => bookmark?.note.id !== selectedNote?.id)
+        dispatch(setBookmarks(updatedBookMarks))
+    };
 
     return (
         <LayoutWrapper>
@@ -48,12 +78,16 @@ const HorizontalLayout = () => {
                 <SideBar
                     handleCreateNote={handleCreateNote}
                     handleSelectNotebook={handleSelectNotebook}
-                    handleSelectNote={handleSelectNote}
+                    handleSelectBookmark={handleSelectBookmark}
                     notebooks={notebooksState}
                     bookmarks={notebookBookmarks}
                 />
                 <Content
                     note={selectedNote}
+                    breadCrumbHistory={breadCrumbHistory}
+                    toggleBookMark={toggleBookMark}
+                    selectedNotebook={selectedNotebook}
+                    
                 />
                 {modalOpen && 
                     <Modal>

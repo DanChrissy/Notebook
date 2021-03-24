@@ -4,13 +4,13 @@ import Breadcrumbs from '../../../../components/Breadcrumb';
 import { ReactComponent as Bookmark} from '../../../../assets/svg/favourite.svg';
 import { ReactComponent as More} from '../../../../assets/svg/more-horizontal.svg';
 
-export default function Header({ breadCrumb, isBookmark = true}) {
+export default function Header({ breadCrumbHistory = {}, isBookmark = true, toggleBookMark = () => {}}) {
     return (
         <HeaderWrapper>
             <HeaderContainer>
                 <BreadcrumbsContainer>
-                    <BookmarkIcon isBookmark={isBookmark}/>
-                    <Breadcrumbs/>
+                    <BookmarkIcon isBookmark={isBookmark} onClick={() => breadCrumbHistory.note && toggleBookMark()}/>
+                    <Breadcrumbs breadCrumbs={breadCrumbHistory}/>
                 </BreadcrumbsContainer>
                 <MoreIcon/>
             </HeaderContainer>

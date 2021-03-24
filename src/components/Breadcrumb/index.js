@@ -1,16 +1,19 @@
 import React from "react";
 import styled, {css} from 'styled-components';
 
-const Breadcrumbs = ({historyList = ['Bookshelf','The Obstacle is The Way']}) => {
+const Breadcrumbs = ({breadCrumbs = {}}) => {
+    const { notebook, note} = breadCrumbs;
     return (
         <BreadCrumbsWrapper>
-            {
-                historyList.map((breadcrumb, index) => {
+            {notebook && <BreadCrumb>{notebook}</BreadCrumb>}
+            {note && <BreadCrumb>{note}</BreadCrumb>}
+            {/* {
+                keys.map((breadcrumbKey, index) => {
                     return (
-                        <BreadCrumb key={index}>{breadcrumb}</BreadCrumb>
+                        <BreadCrumb key={index}>{breadCrumbs[breadcrumbKey]}</BreadCrumb>
                     )
                 })
-            }
+            } */}
         </BreadCrumbsWrapper>
     )
 }
