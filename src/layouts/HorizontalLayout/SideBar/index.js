@@ -11,7 +11,7 @@ import Search from "../../../components/Search";
 import Bookmarks from "./Bookmarks";
 import Notebooks from "./Notebooks";
 
-const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectBookmark, notebooks, bookmarks = [] }) => {
+const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, notebooks, bookmarks = [] }) => {
     const formattedBookmarks = bookmarks.map(item => item?.note || {});
 
     return (
@@ -29,12 +29,12 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectBookmark, 
                 <SideBarContent>
                     <div className="section bookmarks">
                         <p className="section-header">BOOKMARKS</p>
-                        <Bookmarks bookmarks={[...formattedBookmarks]} handleSelectBookmark={handleSelectBookmark}/>
+                        <Bookmarks bookmarks={[...formattedBookmarks]} handleSelectBookmark={handleSelectNote}/>
                     </div>
 
                     <div className="section notebooks">
                         <p className="section-header">NOTEBOOKS</p>
-                        <Notebooks notebooks={[...notebooks]} handleSelectNotebook={handleSelectNotebook}/>
+                        <Notebooks notebooks={[...notebooks]} handleSelectNotebook={handleSelectNotebook}handleSelectNote={handleSelectNote}/>
                     </div>
 
                     <div className="content-items">
@@ -96,6 +96,10 @@ const SideBarContent = styled.div`
 
     .bookmarks {
         height: 10rem;
+        overflow: auto;
+    }
+    .notebooks {
+        height: 15rem;
         overflow: auto;
     }
     .section-header {

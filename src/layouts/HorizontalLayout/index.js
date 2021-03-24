@@ -45,10 +45,6 @@ const HorizontalLayout = () => {
 
         const notebook = notebooksState.find(item => item?.id === id);
         setSelectedNotebook(notebook);
-        // const newBreadCrumb = breadCrumbHistory?.notebook === notebook.name;
-        // // console.log('Breadcrumb histor: ', breadCrumbHistory?.notebook, notebook.name,  breadCrumbHistory?.notebook === notebook.name );
-        // const updatedBreadcrumb = newBreadCrumb ? { notebook: notebook?.name } : {...breadCrumbHistory, notebook: notebook?.name}
-        // setBreadCrumbHistory(updatedBreadcrumb);
     }
 
     const handleSelectNote = id => {
@@ -78,7 +74,7 @@ const HorizontalLayout = () => {
                 <SideBar
                     handleCreateNote={handleCreateNote}
                     handleSelectNotebook={handleSelectNotebook}
-                    handleSelectBookmark={handleSelectBookmark}
+                    handleSelectNote={handleSelectNote}
                     notebooks={notebooksState}
                     bookmarks={notebookBookmarks}
                 />

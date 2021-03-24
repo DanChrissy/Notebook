@@ -9,20 +9,50 @@ import { Space } from "../../../components/Space";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookmarks } from "../../../store/bookmarksStore";
 import { getNotes, setNotes } from "../../../store/notesStore";
+import { getNotebooks, setNotebooks } from "../../../store/notebooksStore";
 
 
 const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNotebook}) => {
     const dispatch = useDispatch();
     const notes = useSelector(getNotes);
+    const notebooks = useSelector(getNotebooks);
     const [noteValues, setNoteValues] = useState({});
+    const [noteId, setNewNoteId] = useState();
     const bookmarks = useSelector(getBookmarks);
 
+    useEffect(() => {
+        setNewNoteId(notes.length + 1);
+    }, []);
 
     useEffect(() => {
-        const updatedNotes = notes.map(noteItem =>
-            noteItem?.id === note?.id ? {...noteItem, ...noteValues} : {...noteItem}
-        )
-        dispatch(setNotes(updatedNotes))
+        console.log('Notes: ', notes);
+        if (isEmpty(note)) {
+            // Check if a notebook has been selected if so add the note to the notebook
+            if (!isEmpty(selectedNotebook)) {
+                const newNote = { id: noteId, ...noteValues};
+                let updatedNotes = [...notes, newNote];
+
+                let updatedNotebooks = notebooks.map(notebook => 
+                    notebook?.id === selectedNotebook?.id ? {...notebook, notes: [...notebook?.notes, noteId]} : {...notebook}
+                )
+                const isNoteSaved = notes.filter(noteItem => noteItem?.id === noteId);
+                const findNotebook = notebooks.find(notebook => notebook?.id === selectedNotebook?.id);
+                const isInNotebook = findNotebook?.notes.includes(noteId);
+                if(!isEmpty(isNoteSaved)) {
+                    updatedNotes = handleUpdateNotes(newNote);
+                }
+                if(!isInNotebook) {
+                    dispatch(setNotebooks(updatedNotebooks));
+                }
+
+                if(!isEmpty(noteValues)) {
+                    dispatch(setNotes(updatedNotes));
+                }
+            }
+        } else {
+            const updatedNotes = handleUpdateNotes(note);
+            dispatch(setNotes(updatedNotes))
+        }
     }, [noteValues])
 
     useEffect(() => {
@@ -34,7 +64,14 @@ const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNot
             setNoteValues(note);
         }
     }, [note])
-    
+
+    const handleUpdateNotes = compNote => {
+        const updatedNotes = notes.map(noteItem =>
+            noteItem?.id === compNote?.id ? {...noteItem, ...noteValues} : {...noteItem}
+        )
+        return updatedNotes
+    };
+
     const handleUpdateNoteValues = (e, name) => {
         const { value = ""} = e?.target;
         setNoteValues({
