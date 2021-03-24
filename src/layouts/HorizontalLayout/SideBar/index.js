@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import createIcon from '../../../assets/svg/create.svg';
 import trashIcon from '../../../assets/svg/trash.svg';
@@ -10,36 +11,9 @@ import Search from "../../../components/Search";
 import Bookmarks from "./Bookmarks";
 import Notebooks from "./Notebooks";
 
-const TEST_BOOKMARKS = [
-    { name: 'The Obstacle is The Way' },
-    { name: 'Carrot Cake' },
-    { name: 'Bundt Cake' },
-    { name: 'To Do List' },
-];
-
-const TEST_NOTEBOOKS = [
-    { name: 'Bookshelf' },
-    { name: 'Journal' },
-    { name: 'Health' },
-    { name: 'Ideas' },
-    { name: 'Travelling' },
-];
-
-const SideBar = ({handleCreateNote, data}) => {
-    const [notebooks, setNotebooks] = useState(data);
-    const [selectedNotebook, setSelectedNotebook] = useState({});
-
-    useEffect(() => {
-        setSelectedNotebook(notebooks[0]);
-    },[])
-
-    const bookmarks = selectedNotebook?.bookmarks || [];
-
-    const handleSelectNotebook = id => {
-        const selected = notebooks.find(note => note?.id === id);
-        setSelectedNotebook(selected);
-    }
-    
+const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, notebooks, bookmarks = [] }) => {
+    const formattedBookmarks = bookmarks.map(item => item?.note || {});
+   
     return (
         <SideBarWrapper>
             <SideBarContainer>
@@ -55,7 +29,7 @@ const SideBar = ({handleCreateNote, data}) => {
                 <SideBarContent>
                     <div className="section">
                         <p className="section-header">BOOKMARKS</p>
-                        <Bookmarks bookmarks={[...bookmarks]}/>
+                        <Bookmarks bookmarks={[...formattedBookmarks]} handleSelectBookmark={handleSelectNote}/>
                     </div>
 
                     <div className="section">

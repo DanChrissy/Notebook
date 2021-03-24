@@ -8,8 +8,8 @@ const Input = ({type = 'text', label, onChange = () => {}, ...defaultProps }) =>
             <InputContainer rows={rows}>
                 {label && <span className="input-label">{label}</span>}
                 {
-                    multiLine ? <textarea className="input-container textarea"></textarea> :
-                    <input className="input-container" type={type} onChange={onChange}/>
+                    multiLine ? <textarea className="input-container textarea" onChange={onChange} {...defaultProps}></textarea> :
+                    <input className="input-container" type={type} onChange={onChange} {...defaultProps}/>
                 }
                 
             </InputContainer>

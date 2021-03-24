@@ -2,13 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import Bookmark from "../../../../components/Bookmark";
 
-const Bookmarks = ({ bookmarks = []}) => {
+const Bookmarks = ({ bookmarks = [], handleSelectBookmark}) => {
+    
     return (
         <BookmarksWrapper>
             <BookmarksContainer>
                 {bookmarks.map((bookmark,index) => {
                     return (
-                        <Bookmark key={index} name={bookmark?.name}/>
+                        <Bookmark
+                            key={index}
+                            name={bookmark?.title}
+                            handleSelectBookmark={() => handleSelectBookmark(bookmark?.id)}
+                        />
                     )
                 })}
             </BookmarksContainer>
