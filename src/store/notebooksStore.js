@@ -1,25 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
-const DEFAULT_STATE = {
-    notebooks: [],
-};
+export const notebookssAdapter = createEntityAdapter();
 
 const NOTEBOOKS_SLICE = createSlice({
     name: "notebooks",
-    initialState: DEFAULT_STATE,
+    initialState: notebookssAdapter.getInitialState(),
     reducers: {
-        setNotebooks: (state, action) => {
-            state.notebooks = action.payload;
+        setNotebooks(state, action) {
+            notebookssAdapter.setAll(state, action.payload);
         },
-        resetNotebooks: () => DEFAULT_STATE,
+        addNotebook: notebookssAdapter.addOne,
+        updateNotebook: notebookssAdapter.updateOne,
+        removeNotebook(state, action){
+            notebookssAdapter.removeOne(state, action.payload)
+        },
+        resetNotebooks: () => notebookssAdapter.getInitialState(),
     },
 });
 
-export const getNotebooks = ({ notebooks: state }) => state.notebooks;
+export const notebooksSelectors = notebookssAdapter.getSelectors(state => state.notebooks);
 
 export const {
     setNotebooks,
     resetNotebooks,
+    removeNotebook,
+    updateNotebook,
+    addNotebook,
 } = NOTEBOOKS_SLICE.actions;
 
 export default NOTEBOOKS_SLICE.reducer;

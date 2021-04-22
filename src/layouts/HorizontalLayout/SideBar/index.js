@@ -11,8 +11,7 @@ import Search from "../../../components/Search";
 import Bookmarks from "./Bookmarks";
 import Notebooks from "./Notebooks";
 
-const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, notebooks, bookmarks = [] }) => {
-    const formattedBookmarks = bookmarks.map(item => item?.note || {});
+const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote }) => {
 
     return (
         <SideBarWrapper>
@@ -29,12 +28,17 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, note
                 <SideBarContent>
                     <div className="section bookmarks">
                         <p className="section-header">BOOKMARKS</p>
-                        <Bookmarks bookmarks={[...formattedBookmarks]} handleSelectBookmark={handleSelectNote}/>
+                        <Bookmarks
+                            handleSelectBookmark={handleSelectNote}
+                        />
                     </div>
 
                     <div className="section notebooks">
                         <p className="section-header">NOTEBOOKS</p>
-                        <Notebooks notebooks={[...notebooks]} handleSelectNotebook={handleSelectNotebook}handleSelectNote={handleSelectNote}/>
+                        <Notebooks
+                            handleSelectNotebook={handleSelectNotebook}
+                            handleSelectNote={handleSelectNote}
+                        />
                     </div>
 
                     <div className="content-items">
@@ -66,7 +70,7 @@ const SideBarContainer = styled.div`
     width:100%;
     position: relative;
 
-    padding-top: 2.5rem;
+    /* padding-top: 2.5rem; */
     background: #fffcf5;
 `;
 
@@ -74,6 +78,7 @@ const SideBarHeader = styled.div`
     display: flex;
     flex-direction: column;
     /* width: 100%; */
+    padding-top: 2.5rem;
     margin-left: var(--space-32);
     margin-right: var(--space-48);
 

@@ -19,7 +19,7 @@ import notesReducer from './notesStore';
 const rootReducer = combineReducers({
     notebooks: notebooksReducer,
     bookmarks: bookmarksRedurer,
-    notes: notesReducer
+    notes: notesReducer,
 })
 
 const persistConfig = {

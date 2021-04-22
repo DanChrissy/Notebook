@@ -1,28 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, {css} from 'styled-components';
 import { HeaderInput, MuliLineInput, SubHeader} from './noteInputs';
 import { Space } from '../Space';
 import Input from '../Input';
+import { notesSelectors, updateNote } from '../../store/notesStore';
+import store from '../../store';
+import { useDispatch } from 'react-redux';
 
-export default function Note({noteValues = {}, handleUpdateNoteValues = () => {}}) {
+export default function Note({note, handleUpdateNoteValues = () => {}}) {
+    const dispatch = useDispatch();
+    const noteObj = notesSelectors.selectById(store.getState(), note);
+    const [noteValues, setNotesValues] = useState({});
+
+    useEffect(() => {
+        setNotesValues({...noteObj});
+    }, [note])
+
+    useEffect(() => {
+        dispatch(updateNote({
+            id: note,
+            changes: {...noteValues}
+        }))
+    } ,[noteValues]);
+
+    const updateNoteFields = (e, name) => {
+        const { value = "" } = e?.target;
+        setNotesValues({
+            ...noteValues,
+            [name] : value
+        })
+    };
+
+    const { title = "", subtitle = "", description = "", body = ""} = noteValues || {};
+
     return (
         <NoteWrapper>
             <NoteContainer>
                 <HeaderInput
-                    value={noteValues?.title || ''}
-                    onChange={(e) => handleUpdateNoteValues(e, 'title')}
+                    value={title}
+                    // onChange={(e) => handleUpdateNoteValues(e, 'title')}
+                    onChange={(e) => updateNoteFields(e, 'title')}
                     placeholder="Note title"
                 />
                 <Space/>
                 <SubHeader
-                    value={noteValues?.subtitle || ''}
+                    value={subtitle}
                     onChange={(e) => handleUpdateNoteValues(e, 'subtitle')}
                     placeholder="Subtitle"
                 />
                 <Space/>
                 <DescriptionWrapper>
                     <MuliLineInput
-                        value={noteValues?.description || ''}
+                        value={description}
                         onChange={(e) => handleUpdateNoteValues(e, 'description')}
                         placeholder="Add a Description"
                     />
@@ -31,7 +60,7 @@ export default function Note({noteValues = {}, handleUpdateNoteValues = () => {}
 
                 <Body>
                     <MuliLineInput
-                        value={noteValues?.body || ''}
+                        value={body}
                         onChange={(e) => handleUpdateNoteValues(e, 'body')}
                         rows={30}
                         styleProps={{fontSize: 'var(--font-20)'}}

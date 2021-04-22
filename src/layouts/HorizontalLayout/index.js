@@ -5,20 +5,31 @@ import SideBar from "./SideBar";
 import Modal from "../../components/Modal";
 import Form from "../../pages/Form";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
-import mockData from '../../mockData/notebooks.json';
-import { getNotes } from "../../store/notesStore";
-import { getNotebooks } from "../../store/notebooksStore";
-import { getBookmarks, setBookmarks } from "../../store/bookmarksStore";
+import { getBookmarks, setBookmarks } from "../../store/bookmarksStoreOLD";
 import { useDispatch, useSelector } from "react-redux";
-
+import { notesSelectors } from "../../store/notesStore";
+import store from "../../store";
+import { notebooksSelectors } from "../../store/notebooksStore";
+import { bookmarksSelectors } from "../../store/bookmarksStore";
 
 const HorizontalLayout = () => {
     const dispatch = useDispatch();
-    const notesState = useSelector(getNotes);
-    const notebooksState = useSelector(getNotebooks);
-    const bookmarksState = useSelector(getBookmarks);
+
+    const notes = notesSelectors.selectAll(store.getState());
+    const notebooks = notebooksSelectors.selectAll(store.getState());
+    const bookmarks = bookmarksSelectors.selectAll(store.getState());
+
+    console.log('Noote: ', notes);
 
     const modalRef = useRef();
+    
+    // Examples using notes:
+    // Add new note: dispatch(addNote({'id': 20, 'title': 'Test'}));
+    // Get notes using selectors: notesSelectors.selectAll(store.getState().testNotes)
+    // Get note by id: notesSelectors.selectById(store.getState().testNotes,2)
+
+    const [selectedNotebookId, setSelectedNotebookId] = useState(1);
+    const [selectedNoteId, setSelectedNoteId] = useState();
 
     const [selectedNotebook, setSelectedNotebook] = useState({});
     const [selectedNote, setSelectedNote] = useState({});
@@ -40,32 +51,30 @@ const HorizontalLayout = () => {
     }
 
     const handleSelectNotebook = id => {
-        const bookmarks = bookmarksState.filter(bookmark => bookmark.notebook === id);
-        setNotebookBookmarks(bookmarks);
+        setSelectedNotebookId(id);
+        // const bookmarks = bookmarksState.filter(bookmark => bookmark.notebook === id);
+        // setNotebookBookmarks(bookmarks);
 
-        const notebook = notebooksState.find(item => item?.id === id);
-        setSelectedNotebook(notebook);
+        // const notebook = notebooksState.find(item => item?.id === id);
+        // setSelectedNotebook(notebook);
     }
 
     const handleSelectNote = id => {
-        const note = notesState.find(noteItem => noteItem?.id === id);
-        setSelectedNote(note);
+        setSelectedNoteId(id);
+        // const note = notesState.find(noteItem => noteItem?.id === id);
+        // setSelectedNote(note);
 
-        const updatedBreadcrumb = {
-            ...breadCrumbHistory,
-            note: note?.title
-        }
-        setBreadCrumbHistory(updatedBreadcrumb);
-    }
-
-    const handleSelectBookmark = id => {
-        handleSelectNote(id);
+        // const updatedBreadcrumb = {
+        //     ...breadCrumbHistory,
+        //     note: note?.title
+        // }
+        // setBreadCrumbHistory(updatedBreadcrumb);
     }
 
     const toggleBookMark = () => {
-        console.log('Selected note: ', selectedNote);
-        const updatedBookMarks = bookmarksState.filter(bookmark => bookmark?.note.id !== selectedNote?.id)
-        dispatch(setBookmarks(updatedBookMarks))
+        // console.log('Selected note: ', selectedNote);
+        // const updatedBookMarks = bookmarksState.filter(bookmark => bookmark?.note.id !== selectedNote?.id)
+        // dispatch(setBookmarks(updatedBookMarks))
     };
 
     return (
@@ -75,15 +84,12 @@ const HorizontalLayout = () => {
                     handleCreateNote={handleCreateNote}
                     handleSelectNotebook={handleSelectNotebook}
                     handleSelectNote={handleSelectNote}
-                    notebooks={notebooksState}
-                    bookmarks={notebookBookmarks}
                 />
                 <Content
-                    note={selectedNote}
+                    note={selectedNoteId}
+                    selectedNotebook={selectedNotebook}
                     breadCrumbHistory={breadCrumbHistory}
                     toggleBookMark={toggleBookMark}
-                    selectedNotebook={selectedNotebook}
-                    
                 />
                 {modalOpen && 
                     <Modal>

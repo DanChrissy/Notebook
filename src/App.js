@@ -4,13 +4,14 @@ import './index.css';
 import HorizontalLayout from './layouts/HorizontalLayout';
 import { setNotebooks } from './store/notebooksStore';
 import { setBookmarks } from './store/bookmarksStore';
-import { setNotes } from './store/notesStore';
+import { notesSelectors, setNotes } from './store/notesStore';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 import notebooksData from './mockData/notebooksData.json';
 import notesData from './mockData/notes.json';
 import bookmarksData from './mockData/bookmarks.json';
+import store from './store';
 
 function App() {
   // Load data into store
@@ -30,5 +31,11 @@ function App() {
     </div>
   );
 }
-
+const Data = () => {
+  const notes = notesSelectors.selectAll(store.getState());
+  console.log('Notes: ', notes);
+  return (
+    <div>DATA</div>
+  )
+}
 export default App;

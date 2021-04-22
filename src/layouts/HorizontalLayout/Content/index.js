@@ -7,9 +7,9 @@ import Note from "../../../components/Note";
 import Header from "./Header";
 import { Space } from "../../../components/Space";
 import { useDispatch, useSelector } from "react-redux";
-import { getBookmarks } from "../../../store/bookmarksStore";
-import { getNotes, setNotes } from "../../../store/notesStore";
-import { getNotebooks, setNotebooks } from "../../../store/notebooksStore";
+import { getBookmarks } from "../../../store/bookmarksStoreOLD";
+import { getNotes, setNotes } from "../../../store/notesStoreOLD";
+import { getNotebooks, setNotebooks } from "../../../store/notebooksStoreOLD";
 
 
 const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNotebook}) => {
@@ -25,7 +25,7 @@ const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNot
     }, []);
 
     useEffect(() => {
-        console.log('Notes: ', notes);
+        // console.log('Notes: ', notes);
         if (isEmpty(note)) {
             // Check if a notebook has been selected if so add the note to the notebook
             if (!isEmpty(selectedNotebook)) {
@@ -92,8 +92,9 @@ const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNot
                 />
                 <Space height="var(--space-40)"/>
                 <Note
-                    noteValues={noteValues}
-                    handleUpdateNoteValues={handleUpdateNoteValues}
+                    note={note}
+                    // noteValues={noteValues}
+                    // handleUpdateNoteValues={handleUpdateNoteValues}
                 />
             </ContentContainer>
         </ContentWrapper>

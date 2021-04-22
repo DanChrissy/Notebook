@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Bookmark from "../../../../components/Bookmark";
+import store from "../../../../store";
+import { bookmarksSelectors } from "../../../../store/bookmarksStore";
+import { notesSelectors } from "../../../../store/notesStore";
 
-const Bookmarks = ({ bookmarks = [], handleSelectBookmark}) => {
-    
+const Bookmarks = ({ handleSelectBookmark}) => {
+    const bookmarks = bookmarksSelectors.selectAll(store.getState());
+
     return (
         <BookmarksWrapper>
             <BookmarksContainer>
                 {bookmarks.map((bookmark,index) => {
+                    const note = notesSelectors.selectById(store.getState(), bookmark?.note);
                     return (
                         <Bookmark
                             key={index}
-                            name={bookmark?.title}
-                            handleSelectBookmark={() => handleSelectBookmark(bookmark?.id)}
+                            name={note?.title}
+                            handleSelectBookmark={() => handleSelectBookmark(note?.id)}
                         />
                     )
                 })}
