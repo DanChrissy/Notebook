@@ -10,8 +10,11 @@ import Profile from "../../../components/Profile";
 import Search from "../../../components/Search";
 import Bookmarks from "./Bookmarks";
 import Notebooks from "./Notebooks";
+import store from "../../../store";
+import { notesSelectors } from "../../../store/notesStore";
 
 const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote }) => {
+    // console.log("Notes: ", notesSelectors.selectAll(store.getState()));
 
     return (
         <SideBarWrapper>

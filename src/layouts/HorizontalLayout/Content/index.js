@@ -81,6 +81,7 @@ const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNot
     }
 
     const bookmarkObj = bookmarks.find(bookmark => bookmark?.note?.id === note?.id) || {};
+    console.log('Note: ', note);
 
     return (
         <ContentWrapper>

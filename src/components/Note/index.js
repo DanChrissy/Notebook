@@ -45,23 +45,25 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
                 <Space/>
                 <SubHeader
                     value={subtitle}
-                    onChange={(e) => handleUpdateNoteValues(e, 'subtitle')}
+                    // onChange={(e) => handleUpdateNoteValues(e, 'subtitle')}
+                    onChange={(e) => updateNoteFields(e, 'subtitle')}
                     placeholder="Subtitle"
                 />
                 <Space/>
                 <DescriptionWrapper>
                     <MuliLineInput
                         value={description}
-                        onChange={(e) => handleUpdateNoteValues(e, 'description')}
+                        // onChange={(e) => handleUpdateNoteValues(e, 'description')}
+                        onChange={(e) => updateNoteFields(e, 'description')}
                         placeholder="Add a Description"
                     />
                 </DescriptionWrapper>
                 <Space/>
-
                 <Body>
                     <MuliLineInput
                         value={body}
-                        onChange={(e) => handleUpdateNoteValues(e, 'body')}
+                        // onChange={(e) => handleUpdateNoteValues(e, 'body')}
+                        onChange={(e) => updateNoteFields(e, 'body')}
                         rows={30}
                         styleProps={{fontSize: 'var(--font-20)'}}
                         placeholder="Add some details..."
