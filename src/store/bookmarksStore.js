@@ -1,4 +1,4 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter, current } from "@reduxjs/toolkit";
 
 const bookmarksAdapter = createEntityAdapter();
 
@@ -9,8 +9,14 @@ const BOOKMARKS_SLICE = createSlice({
         setBookmarks: (state, action) => {
             bookmarksAdapter.setAll(state, action.payload);
         },
-        addBookmark: bookmarksAdapter.addOne,
+        addBookmark: (state, action) => {
+            const nextId = current(state).ids.slice(-1)[0] + 1;
+            const updatedNewBookmark = {id: nextId, ...action?.payload};
+
+            bookmarksAdapter.addOne(state, updatedNewBookmark);
+        },
         removeBookmark(state, action) {
+            console.log("Remove: ", action);
             bookmarksAdapter.removeOne(state, action.payload)
         },
         resetBookmarks: () => bookmarksAdapter.getInitialState(),

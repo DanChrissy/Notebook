@@ -10,15 +10,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBookmarks } from "../../../store/bookmarksStoreOLD";
 import { getNotes, setNotes } from "../../../store/notesStoreOLD";
 import { getNotebooks, setNotebooks } from "../../../store/notebooksStoreOLD";
+import { addBookmark, bookmarksSelectors, getIsBookmark, removeBookmark } from "../../../store/bookmarksStore";
+import store from "../../../store";
+import { notebooksSelectors } from "../../../store/notebooksStore";
+import { notesSelectors } from "../../../store/notesStore";
 
 
-const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNotebook}) => {
+const Content = ({note = {}, selectedNotebook}) => {
     const dispatch = useDispatch();
-    const notes = useSelector(getNotes);
-    const notebooks = useSelector(getNotebooks);
+    // const notes = useSelector(getNotes);
+    // const notebooks = useSelector(getNotebooks);
     const [noteValues, setNoteValues] = useState({});
     const [noteId, setNewNoteId] = useState();
-    const bookmarks = useSelector(getBookmarks);
+    // const bookmarks = useSelector(getBookmarks);
+    const bookmarks = bookmarksSelectors.selectAll(store.getState());
+    const notebooks = notebooksSelectors.selectAll(store.getState());
+    const notes = notesSelectors.selectAll(store.getState());
 
     useEffect(() => {
         setNewNoteId(notes.length + 1);
@@ -80,15 +87,40 @@ const Content = ({note = {}, breadCrumbHistory = {}, toggleBookMark, selectedNot
         })
     }
 
-    const bookmarkObj = bookmarks.find(bookmark => bookmark?.note?.id === note?.id) || {};
-    console.log('Note: ', note);
+    const getIsBookmark = (noteId) => bookmarksSelectors.selectAll(store.getState()).find(bookmark => bookmark?.note === noteId);
+    const getNotebook = (noteId) => notebooks.find(notebook => notebook?.notes.includes(noteId));
+    const getBreadCrumbHistory = () => {
+        const noteObj = notesSelectors.selectById(store.getState(), note);
+        const notebookObj = note && getNotebook(note);
+        console.log("Breadcrumb: ", noteObj, notebookObj);
+        return {notebook: notebookObj?.name || '', note: noteObj?.title || ''};
+    }
 
+    const toggleBookMark = () => {
+        const bookmark = getIsBookmark(note);
+        console.log("Toogle bookmark:", bookmark);
+        if (bookmark) {
+            // Remove bookmark
+            dispatch(removeBookmark(bookmark?.id));
+        } else {
+            // Add to bookmark list
+            console.log("Add bookmark");
+
+            dispatch(addBookmark({note, notebook: getNotebook(note)?.id}))
+            // Get note id, notebookid and 
+
+        }
+        
+    };
+    const breadCrumbHistory = getBreadCrumbHistory();
+    
     return (
         <ContentWrapper>
             <ContentContainer>
                 <Header
                     breadCrumbHistory={breadCrumbHistory}
-                    isBookmark={!isEmpty(bookmarkObj)}
+                    // isBookmark={!isEmpty(bookmarkObj)}
+                    isBookmark={!!getIsBookmark(note)}
                     toggleBookMark={toggleBookMark}
                 />
                 <Space height="var(--space-40)"/>

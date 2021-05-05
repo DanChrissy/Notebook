@@ -7,10 +7,6 @@ import { notesSelectors } from "../../../../store/notesStore";
 
 const Bookmarks = ({ handleSelectBookmark}) => {
     const bookmarks = bookmarksSelectors.selectAll(store.getState());
-    const notes = notesSelectors.selectAll(store.getState());
-    useEffect(() => {
-        console.log("Update")
-    }, [notes]);
 
     return (
         <BookmarksWrapper>

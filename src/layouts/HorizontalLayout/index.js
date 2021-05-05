@@ -19,7 +19,7 @@ const HorizontalLayout = () => {
     const notebooks = notebooksSelectors.selectAll(store.getState());
     const bookmarks = bookmarksSelectors.selectAll(store.getState());
 
-    console.log('Noote: ', notes);
+    // console.log('Noote: ', notes);
 
     const modalRef = useRef();
     
@@ -38,6 +38,7 @@ const HorizontalLayout = () => {
     const [breadCrumbHistory, setBreadCrumbHistory] = useState({});
     
     useOnClickOutside(modalRef, () => setMddalOpen(false));
+    console.log("Selected notebook: ", selectedNotebookId, selectedNoteId)
 
     useEffect(() => {
         if (breadCrumbHistory?.notebook !== selectedNotebook?.name) {
@@ -72,7 +73,7 @@ const HorizontalLayout = () => {
     }
 
     const toggleBookMark = () => {
-        // console.log('Selected note: ', selectedNote);
+        console.log('Selected note: ', selectedNote);
         // const updatedBookMarks = bookmarksState.filter(bookmark => bookmark?.note.id !== selectedNote?.id)
         // dispatch(setBookmarks(updatedBookMarks))
     };
