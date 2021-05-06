@@ -12,8 +12,9 @@ import Bookmarks from "./Bookmarks";
 import Notebooks from "./Notebooks";
 import store from "../../../store";
 import { notesSelectors } from "../../../store/notesStore";
+import Dropdown, {Option} from "../../../components/Dropdown";
 
-const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote }) => {
+const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, handleOpenCreationOption }) => {
     // console.log("Notes: ", notesSelectors.selectAll(store.getState()));
 
     return (
@@ -29,6 +30,7 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote }) =>
                 </SideBarHeader>
 
                 <SideBarContent>
+
                     <div className="section bookmarks">
                         <p className="section-header">BOOKMARKS</p>
                         <Bookmarks
@@ -48,7 +50,25 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote }) =>
                         <span className="trash">
                             <ListItem icon={trashIcon} name="Trash"/>
                         </span>
-                        <ListItem icon={createIcon} name="Add Note or Notebook" create onClick={handleCreateNote}/>
+                        <ListItem
+                            icon={createIcon}
+                            name="Add Note or Notebook"
+                            create 
+                            // onClick={handleCreateNote}
+                            onClick={handleOpenCreationOption}
+                        />
+
+                        {/* <Dropdown
+                            trigger={
+                                <ListItem icon={createIcon} name="Add Note or Notebook" create onClick={handleCreateNote}/>
+                            }
+                        >
+                            <>
+                                <Option option="Note"/>
+                                <Option option="Notebook"/>
+
+                            </>
+                        </Dropdown> */}
                     </div>
                     
                 </SideBarContent>
@@ -71,6 +91,8 @@ const SideBarContainer = styled.div`
     flex: 1;
     height: 100%;
     width:100%;
+    display: flex;
+    flex-direction: column;
     position: relative;
 
     /* padding-top: 2.5rem; */
@@ -95,7 +117,7 @@ const SideBarContent = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: var(--space-24);
-    height: 43rem;
+    /* height: 43rem; */
     overflow: scroll;
 
     .section {
@@ -135,8 +157,9 @@ const SideBarContent = styled.div`
 `;
 
 const SideBarFooter = styled.div`
-    position: absolute;
+    /* position: absolute; */
+    flex-shrink: 1;
     bottom: 0;
-    height: 8rem;
+    height: 6rem;
     width: 100%;
 `;

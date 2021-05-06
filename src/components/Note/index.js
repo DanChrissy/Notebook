@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled, {css} from 'styled-components';
 import { HeaderInput, MuliLineInput, SubHeader} from './noteInputs';
 import { Space } from '../Space';
 import Input from '../Input';
 import { notesSelectors, updateNote } from '../../store/notesStore';
+import {PageContext} from '../../contexts/PageContext';
 import store from '../../store';
 import { useDispatch } from 'react-redux';
 
@@ -11,6 +12,7 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
     const dispatch = useDispatch();
     const noteObj = notesSelectors.selectById(store.getState(), note);
     const [noteValues, setNotesValues] = useState({});
+    const { pageState, setPageState } = useContext(PageContext);
 
     useEffect(() => {
         setNotesValues({...noteObj});
@@ -21,6 +23,7 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
             id: note,
             changes: {...noteValues}
         }))
+        setPageState({...pageState, loading: true});
     } ,[noteValues]);
 
     const updateNoteFields = (e, name) => {

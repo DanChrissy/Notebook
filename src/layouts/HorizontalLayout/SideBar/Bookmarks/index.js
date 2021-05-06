@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Bookmark from "../../../../components/Bookmark";
 import store from "../../../../store";
-import { bookmarksSelectors } from "../../../../store/bookmarksStore";
+import { bookmarksSelectors, loadBookmarks } from "../../../../store/bookmarksStore";
 import { notesSelectors } from "../../../../store/notesStore";
 
 const Bookmarks = ({ handleSelectBookmark}) => {
     const bookmarks = bookmarksSelectors.selectAll(store.getState());
-
+    const reverseBookmarks = [...bookmarks].reverse();
+    
     return (
         <BookmarksWrapper>
             <BookmarksContainer>
-                {bookmarks.map((bookmark,index) => {
+                {reverseBookmarks.map((bookmark,index) => {
                     const note = notesSelectors.selectById(store.getState(), bookmark?.note);
                     return (
                         <Bookmark

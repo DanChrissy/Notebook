@@ -14,7 +14,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     const notebooks = notebooksSelectors.selectAll(store.getState());
     const notes = notesSelectors.selectAll(store.getState());
 
-    console.log('Notes:', notes);
+    // console.log('Notes:', notes);
 
     const [selectedNotebook, setSelectedNotebook] = useState();
     const [notebookNotes, setNotebookNNotes] = useState([]);
@@ -28,6 +28,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     }
 
     useEffect(() => {
+        console.log("Update");
         let notebookNotes = [];
 
         const notebookObj = notebooksSelectors.selectById(store.getState(), selectedNotebook);

@@ -5,6 +5,7 @@ import SideBar from "./SideBar";
 import Modal from "../../components/Modal";
 import Form from "../../pages/Form";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
+import {PageContext} from '../../contexts/PageContext';
 import { getBookmarks, setBookmarks } from "../../store/bookmarksStoreOLD";
 import { useDispatch, useSelector } from "react-redux";
 import { notesSelectors } from "../../store/notesStore";
@@ -19,8 +20,9 @@ const HorizontalLayout = () => {
     const notebooks = notebooksSelectors.selectAll(store.getState());
     const bookmarks = bookmarksSelectors.selectAll(store.getState());
 
-    // console.log('Noote: ', notes);
-
+    useEffect(() => {
+        // console.log('Notes: ', notes)
+    }, [notes])
     const modalRef = useRef();
     
     // Examples using notes:
@@ -28,79 +30,64 @@ const HorizontalLayout = () => {
     // Get notes using selectors: notesSelectors.selectAll(store.getState().testNotes)
     // Get note by id: notesSelectors.selectById(store.getState().testNotes,2)
 
+    const [pageState, setPageState] = useState({});
+
     const [selectedNotebookId, setSelectedNotebookId] = useState(1);
     const [selectedNoteId, setSelectedNoteId] = useState();
 
-    const [selectedNotebook, setSelectedNotebook] = useState({});
-    const [selectedNote, setSelectedNote] = useState({});
-    const [notebookBookmarks, setNotebookBookmarks] = useState([]);
     const [modalOpen, setMddalOpen] = useState(false);
-    const [breadCrumbHistory, setBreadCrumbHistory] = useState({});
+    const [creationModalOpen, setOpenCreationModal] = useState(false);
     
     useOnClickOutside(modalRef, () => setMddalOpen(false));
-    console.log("Selected notebook: ", selectedNotebookId, selectedNoteId)
+    const initialNotes = notebooksSelectors.selectById(store.getState(), 1)?.notes || [];
+    const initialNote = initialNotes[0];
 
     useEffect(() => {
-        if (breadCrumbHistory?.notebook !== selectedNotebook?.name) {
-            setBreadCrumbHistory({notebook: selectedNotebook?.name})
-        }
-        // setBreadCrumbHistory({ notebook: selectedNotebook?.name});
-    }, [selectedNotebook])
+        // On initial open set the note seen to the first note in the first notebook;
+        setSelectedNotebookId(1);
+        setSelectedNoteId(initialNote);
+    }, [])
 
     const handleCreateNote = () => {
-        setMddalOpen(true);
+        // setMddalOpen(true);
+        // setSelectedNoteId();
     }
 
     const handleSelectNotebook = id => {
         setSelectedNotebookId(id);
-        // const bookmarks = bookmarksState.filter(bookmark => bookmark.notebook === id);
-        // setNotebookBookmarks(bookmarks);
-
-        // const notebook = notebooksState.find(item => item?.id === id);
-        // setSelectedNotebook(notebook);
     }
 
     const handleSelectNote = id => {
         setSelectedNoteId(id);
-        // const note = notesState.find(noteItem => noteItem?.id === id);
-        // setSelectedNote(note);
-
-        // const updatedBreadcrumb = {
-        //     ...breadCrumbHistory,
-        //     note: note?.title
-        // }
-        // setBreadCrumbHistory(updatedBreadcrumb);
     }
 
-    const toggleBookMark = () => {
-        console.log('Selected note: ', selectedNote);
-        // const updatedBookMarks = bookmarksState.filter(bookmark => bookmark?.note.id !== selectedNote?.id)
-        // dispatch(setBookmarks(updatedBookMarks))
+    const handleOpenCreationOption = () => {
+        setOpenCreationModal(true);
     };
 
     return (
-        <LayoutWrapper>
-            <LayoutContainer>
-                <SideBar
-                    handleCreateNote={handleCreateNote}
-                    handleSelectNotebook={handleSelectNotebook}
-                    handleSelectNote={handleSelectNote}
-                />
-                <Content
-                    note={selectedNoteId}
-                    selectedNotebook={selectedNotebook}
-                    breadCrumbHistory={breadCrumbHistory}
-                    toggleBookMark={toggleBookMark}
-                />
-                {modalOpen && 
-                    <Modal>
-                        <div ref={modalRef}>
-                            <Form/>
-                        </div>
-                    </Modal>
-                }
-            </LayoutContainer>
-        </LayoutWrapper>
+        <PageContext.Provider value={{pageState, setPageState}}>
+            <LayoutWrapper>
+                <LayoutContainer>
+                    <SideBar
+                        handleCreateNote={handleCreateNote}
+                        handleSelectNotebook={handleSelectNotebook}
+                        handleSelectNote={handleSelectNote}
+                        handleOpenCreationOption={handleOpenCreationOption}
+                    />
+                    <Content
+                        note={selectedNoteId}
+                    />
+                    {(modalOpen || creationModalOpen) && 
+                        <Modal>
+                            <div ref={modalRef}>
+                                <Form/>
+                            </div>
+                        </Modal>
+                    }
+                </LayoutContainer>
+            </LayoutWrapper>
+        </PageContext.Provider>
     )
 }
 

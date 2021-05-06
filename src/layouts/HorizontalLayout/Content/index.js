@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import styled from "styled-components";
 import { isEmpty } from "lodash";
 import Breadcrumbs from '../../../components/Breadcrumb';
@@ -10,108 +10,104 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBookmarks } from "../../../store/bookmarksStoreOLD";
 import { getNotes, setNotes } from "../../../store/notesStoreOLD";
 import { getNotebooks, setNotebooks } from "../../../store/notebooksStoreOLD";
-import { addBookmark, bookmarksSelectors, getIsBookmark, removeBookmark } from "../../../store/bookmarksStore";
+import { addBookmark, bookmarksSelectors, loadBookmarks, removeBookmark } from "../../../store/bookmarksStore";
 import store from "../../../store";
 import { notebooksSelectors } from "../../../store/notebooksStore";
 import { notesSelectors } from "../../../store/notesStore";
+import {PageContext} from '../../../contexts/PageContext';
 
 
-const Content = ({note = {}, selectedNotebook}) => {
+const Content = ({note = {}}) => {
     const dispatch = useDispatch();
-    // const notes = useSelector(getNotes);
-    // const notebooks = useSelector(getNotebooks);
     const [noteValues, setNoteValues] = useState({});
     const [noteId, setNewNoteId] = useState();
-    // const bookmarks = useSelector(getBookmarks);
     const bookmarks = bookmarksSelectors.selectAll(store.getState());
     const notebooks = notebooksSelectors.selectAll(store.getState());
     const notes = notesSelectors.selectAll(store.getState());
+    const { pageState, setPageState } = useContext(PageContext);
 
-    useEffect(() => {
-        setNewNoteId(notes.length + 1);
-    }, []);
+    // console.log("Page state: ", pageState)
 
-    useEffect(() => {
-        // console.log('Notes: ', notes);
-        if (isEmpty(note)) {
-            // Check if a notebook has been selected if so add the note to the notebook
-            if (!isEmpty(selectedNotebook)) {
-                const newNote = { id: noteId, ...noteValues};
-                let updatedNotes = [...notes, newNote];
+    // useEffect(() => {
+    //     setNewNoteId(notes.length + 1);
+    // }, []);
 
-                let updatedNotebooks = notebooks.map(notebook => 
-                    notebook?.id === selectedNotebook?.id ? {...notebook, notes: [...notebook?.notes, noteId]} : {...notebook}
-                )
-                const isNoteSaved = notes.filter(noteItem => noteItem?.id === noteId);
-                const findNotebook = notebooks.find(notebook => notebook?.id === selectedNotebook?.id);
-                const isInNotebook = findNotebook?.notes.includes(noteId);
-                if(!isEmpty(isNoteSaved)) {
-                    updatedNotes = handleUpdateNotes(newNote);
-                }
-                if(!isInNotebook) {
-                    dispatch(setNotebooks(updatedNotebooks));
-                }
+    // useEffect(() => {
+    //     // console.log('Notes: ', notes);
+    //     if (isEmpty(note)) {
+    //         // Check if a notebook has been selected if so add the note to the notebook
+    //         if (!isEmpty(selectedNotebook)) {
+    //             const newNote = { id: noteId, ...noteValues};
+    //             let updatedNotes = [...notes, newNote];
 
-                if(!isEmpty(noteValues)) {
-                    dispatch(setNotes(updatedNotes));
-                }
-            }
-        } else {
-            const updatedNotes = handleUpdateNotes(note);
-            dispatch(setNotes(updatedNotes))
-        }
-    }, [noteValues])
+    //             let updatedNotebooks = notebooks.map(notebook => 
+    //                 notebook?.id === selectedNotebook?.id ? {...notebook, notes: [...notebook?.notes, noteId]} : {...notebook}
+    //             )
+    //             const isNoteSaved = notes.filter(noteItem => noteItem?.id === noteId);
+    //             const findNotebook = notebooks.find(notebook => notebook?.id === selectedNotebook?.id);
+    //             const isInNotebook = findNotebook?.notes.includes(noteId);
+    //             if(!isEmpty(isNoteSaved)) {
+    //                 updatedNotes = handleUpdateNotes(newNote);
+    //             }
+    //             if(!isInNotebook) {
+    //                 dispatch(setNotebooks(updatedNotebooks));
+    //             }
 
-    useEffect(() => {
-        setNoteValues({});
-    }, [selectedNotebook]);
+    //             if(!isEmpty(noteValues)) {
+    //                 dispatch(setNotes(updatedNotes));
+    //             }
+    //         }
+    //     } else {
+    //         const updatedNotes = handleUpdateNotes(note);
+    //         dispatch(setNotes(updatedNotes))
+    //     }
+    // }, [noteValues])
 
-    useEffect(() => {
-        if (!isEmpty(note)) {
-            setNoteValues(note);
-        }
-    }, [note])
+    // useEffect(() => {
+    //     setNoteValues({});
+    // }, [selectedNotebook]);
 
-    const handleUpdateNotes = compNote => {
-        const updatedNotes = notes.map(noteItem =>
-            noteItem?.id === compNote?.id ? {...noteItem, ...noteValues} : {...noteItem}
-        )
-        return updatedNotes
-    };
+    // useEffect(() => {
+    //     if (!isEmpty(note)) {
+    //         setNoteValues(note);
+    //     }
+    // }, [note])
 
-    const handleUpdateNoteValues = (e, name) => {
-        const { value = ""} = e?.target;
-        setNoteValues({
-            ...noteValues,
-            [name]: value
-        })
-    }
+    // const handleUpdateNotes = compNote => {
+    //     const updatedNotes = notes.map(noteItem =>
+    //         noteItem?.id === compNote?.id ? {...noteItem, ...noteValues} : {...noteItem}
+    //     )
+    //     return updatedNotes
+    // };
 
-    const getIsBookmark = (noteId) => bookmarksSelectors.selectAll(store.getState()).find(bookmark => bookmark?.note === noteId);
+    // const handleUpdateNoteValues = (e, name) => {
+    //     const { value = ""} = e?.target;
+    //     setNoteValues({
+    //         ...noteValues,
+    //         [name]: value
+    //     })
+    // }
     const getNotebook = (noteId) => notebooks.find(notebook => notebook?.notes.includes(noteId));
     const getBreadCrumbHistory = () => {
         const noteObj = notesSelectors.selectById(store.getState(), note);
         const notebookObj = note && getNotebook(note);
-        console.log("Breadcrumb: ", noteObj, notebookObj);
+        // console.log("Breadcrumb: ", noteObj, notebookObj);
         return {notebook: notebookObj?.name || '', note: noteObj?.title || ''};
     }
 
     const toggleBookMark = () => {
         const bookmark = getIsBookmark(note);
-        console.log("Toogle bookmark:", bookmark);
+        // console.log("Toogle bookmark:", bookmark);
         if (bookmark) {
             // Remove bookmark
             dispatch(removeBookmark(bookmark?.id));
         } else {
-            // Add to bookmark list
-            console.log("Add bookmark");
-
+            // Add to bookmark list with obj: {note: noteId, notebook: notebookId}
             dispatch(addBookmark({note, notebook: getNotebook(note)?.id}))
-            // Get note id, notebookid and 
-
         }
-        
+        setPageState({...pageState, loading: true});
     };
+
     const breadCrumbHistory = getBreadCrumbHistory();
     
     return (
@@ -126,8 +122,6 @@ const Content = ({note = {}, selectedNotebook}) => {
                 <Space height="var(--space-40)"/>
                 <Note
                     note={note}
-                    // noteValues={noteValues}
-                    // handleUpdateNoteValues={handleUpdateNoteValues}
                 />
             </ContentContainer>
         </ContentWrapper>
@@ -135,6 +129,8 @@ const Content = ({note = {}, selectedNotebook}) => {
 }
 
 export default Content;
+
+export const getIsBookmark = (noteId) => bookmarksSelectors.selectAll(store.getState()).find(bookmark => bookmark?.note === noteId);
 
 const ContentWrapper = styled.div`
     flex:1;

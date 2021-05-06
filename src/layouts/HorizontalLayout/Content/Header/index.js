@@ -3,8 +3,9 @@ import styled, { css } from 'styled-components';
 import Breadcrumbs from '../../../../components/Breadcrumb';
 import { ReactComponent as Bookmark} from '../../../../assets/svg/favourite.svg';
 import { ReactComponent as More} from '../../../../assets/svg/more-horizontal.svg';
+import { getIsBookmark } from '..';
 
-export default function Header({ breadCrumbHistory = {}, isBookmark = true, toggleBookMark = () => {}}) {
+export default function Header({ breadCrumbHistory = {}, isBookmark = true, toggleBookMark = () => {} }) {
     return (
         <HeaderWrapper>
             <HeaderContainer>
