@@ -5,10 +5,11 @@ export const notesAdapter = createEntityAdapter();
 
 const NOTES_SLICE = createSlice({
     name: "notes",
-    initialState: notesAdapter.getInitialState(),
+    initialState: notesAdapter.getInitialState({loading: false}),
     reducers: {
         setNotes(state, action) {
             notesAdapter.setAll(state, action.payload);
+            state.loading = false;
         },
         addNote: notesAdapter.addOne,
         updateNote(state, update) {
@@ -17,6 +18,9 @@ const NOTES_SLICE = createSlice({
         // updateNote: notesAdapter.updateOne,
         removeNote(state, action){
             notesAdapter.removeOne(state, action.payload)
+        },
+        notesLoading: (state, action) => {
+            if (action.payload === true) state.loading = action.payload;
         },
         resetNotes: () => notesAdapter.getInitialState(),
     },
@@ -30,6 +34,7 @@ export const {
     removeNote,
     updateNote,
     addNote,
+    notesLoading
 } = NOTES_SLICE.actions;
 
 export default NOTES_SLICE.reducer;

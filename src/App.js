@@ -4,9 +4,9 @@ import './index.css';
 import HorizontalLayout from './layouts/HorizontalLayout';
 import { setNotebooks } from './store/notebooksStore';
 import { setBookmarks } from './store/bookmarksStore';
-import { notesSelectors, setNotes } from './store/notesStore';
+import { notesSelectors, setNotes, notesLoading } from './store/notesStore';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 import notebooksData from './mockData/notebooksData.json';
 import notesData from './mockData/notes.json';
@@ -24,10 +24,13 @@ function App() {
     dispatch(setBookmarks(bookmarks));
     dispatch(setNotebooks(notebooks));
     dispatch(setNotes(notes));
-  }, []);
+  },[]);
+
+  const shouldRender = store.getState().notes.notes.length > 0;
+  
   return (
     <div className="App">
-      <HorizontalLayout/>
+      {shouldRender && <HorizontalLayout/>}
     </div>
   );
 }

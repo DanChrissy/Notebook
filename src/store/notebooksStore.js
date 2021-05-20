@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, current } from "@reduxjs/toolkit";
 
 export const notebookssAdapter = createEntityAdapter();
 
@@ -9,7 +9,12 @@ const NOTEBOOKS_SLICE = createSlice({
         setNotebooks(state, action) {
             notebookssAdapter.setAll(state, action.payload);
         },
-        addNotebook: notebookssAdapter.addOne,
+        addNotebook: (state, action) => {
+            const nextId = current(state).ids.slice(-1)[0] + 1;
+            const updatedNewNotebook = {id: nextId, ...action?.payload};
+            console.log("Notebook: ", updatedNewNotebook);
+            notebookssAdapter.addOne(state, updatedNewNotebook);
+        },
         updateNotebook: notebookssAdapter.updateOne,
         removeNotebook(state, action){
             notebookssAdapter.removeOne(state, action.payload)

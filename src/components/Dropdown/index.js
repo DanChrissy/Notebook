@@ -2,14 +2,14 @@ import React, {useRef, useState} from 'react';
 import styled, { css } from "styled-components";
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 
-export default function Dropdown({trigger, children}){
+export default function Dropdown({trigger, children, isTriggerPaused = false}){
     const dropdownRef = useRef();
     const [isOpen, setIsOpen] = useState(false);
 
     useOnClickOutside(dropdownRef, () => setIsOpen(false));
 
     function toggleSelect() {
-        setIsOpen(!isOpen);
+        !isTriggerPaused && setIsOpen(!isOpen);
     }
     return (
         <MenuDropdownContainer ref={dropdownRef}>

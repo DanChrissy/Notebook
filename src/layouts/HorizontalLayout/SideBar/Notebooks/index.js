@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {isEmpty} from "lodash";
 import styled from "styled-components";
 import Notebook from "../../../../components/Notebook";
 // import { getNotebooks } from "../../../../store/notebooksStoreOLD";
 // import { getNotes } from "../../../../store/notesStoreOLD";
-import { notebooksSelectors } from "../../../../store/notebooksStore";
+import { notebooksSelectors, removeNotebook, updateNotebook } from "../../../../store/notebooksStore";
 import store from "../../../../store";
 import { notesSelectors } from "../../../../store/notesStore";
 import Dropdown, {Option} from "../../../../components/Dropdown";
+import NotebooksList from "./NotebooksList";
 
 const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
+    const dispatch = useDispatch();
     const notebooks = notebooksSelectors.selectAll(store.getState());
+    const reverseNotebooks = [...notebooks].reverse();
     const notes = notesSelectors.selectAll(store.getState());
-
-    // console.log('Notes:', notes);
 
     const [selectedNotebook, setSelectedNotebook] = useState();
     const [notebookNotes, setNotebookNNotes] = useState([]);
-
-    // const notebooksData = useSelector(getNotebooks);
-    // const notes = useSelector(getNotes);
-
-    const handleNotebook = id => {
-        handleSelectNotebook(id);
-        setSelectedNotebook(id);
-    }
 
     useEffect(() => {
         console.log("Update");
@@ -43,10 +36,43 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
         setNotebookNNotes(notebookNotes)
 
     }, [selectedNotebook, notes])
+
+    useEffect(() => {
+        console.log("Notebooks: ", notebooks);
+    }, [notebooks]);
+
+    const handleNotebook = id => {
+        handleSelectNotebook(id);
+        setSelectedNotebook(id);
+    }
+
+    const handleEditNotebok = (id, value) => {
+        console.log('Edit id:', id, value);
+        const updatedNotebook = {id: id, changes: { name: value}};
+        dispatch(updateNotebook(updatedNotebook));
+    }
+
+    const handleRemoveNotebok = id => {
+        console.log('Remove id:', id);
+        // Removes the notebook without removing the notes
+        dispatch(removeNotebook(id));
+
+        // Remove the notebook and all the notes associated with notes
+        // Get notes via notes id in notebook
+        // Use remove many selector in notes
+    }
     
     return (
         <NotebooksWrapper>
             <NotebooksContainer>
+                {/* <NotebooksList
+                    notebooks={notebooks}
+                    notebookNotes={notebookNotes}
+                    handleEditNotebok={handleEditNotebok}
+                    handleNotebook={handleNotebook}
+                    handleRemoveNotebok={handleRemoveNotebok}
+                    handleSelectNote={handleSelectNote}
+                /> */}
                 {notebooks.map((notebook,index) => {
                     return (
                         <Dropdown
@@ -56,6 +82,8 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                                     key={index} 
                                     name={notebook?.name}
                                     handleSelectNotebook={() => handleNotebook(notebook?.id)}
+                                    handleEditNotebok={(value) => handleEditNotebok(notebook?.id, value)}
+                                    handleRemoveNotebok={() => handleRemoveNotebok(notebook?.id)}
                                 />
                             }
                         >
@@ -69,7 +97,6 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                                 )
                             })}
                         </Dropdown>
-                        
                     )
                 })}
             </NotebooksContainer>

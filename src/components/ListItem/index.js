@@ -1,14 +1,49 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled, {css} from 'styled-components';
 import fileIcon from '../../assets/svg/file.svg';
 import { ReactComponent as FileIcon } from "../../assets/svg/file.svg";
+import { ReactComponent as WasteIcon } from "../../assets/svg/waste.svg";
+import { ReactComponent as EditIcon } from "../../assets/svg/edit.svg";
+import { ReactComponent as TickIcon } from "../../assets/svg/tick.svg";
 
 const ListItem = ({icon = FileIcon, name = "", onClick = () => {}, ...defaultProps}) => {
-    const { create } = defaultProps;
+    const { create, actions = false, handleRemove = () => {}, handleEdit = () => {} } = defaultProps;
+    
+    const [isEditting, setIsEditting] = useState(false);
+    const [value, setValue] = useState(name);
+
+    const onChangeItem = e => {
+        setValue(e.target.value);
+    }
+
+    useEffect(() => {
+        if (!isEditting) {
+            (name.localeCompare(value) !== 0) && handleEdit(value);
+        }
+    }, [isEditting])
+
     return (
         <ItemButton type="button" onClick={() => onClick()} {...defaultProps}>
             <ButtonIcon src={icon} {...defaultProps}/>
-            <span className="label">{name}</span>
+            { !isEditting ? <span className="label">{value}</span> :
+                <input
+                    value={value}
+                    onChange={onChangeItem}
+                />
+            }
+            
+            {actions &&
+                <Actions>
+                    <div className="action" onClick={handleRemove}>
+                        <WasteIcon stroke="var(--color-orange-600)"/>
+                    </div>
+                    <div className="action" onClick={() => setIsEditting(!isEditting)}>
+                        {isEditting ? <TickIcon fill="var(--color-orange-600)"/> : <EditIcon stroke="var(--color-orange-600)"/>}
+                    </div>
+                    
+                </Actions>
+            }
+            
         </ItemButton>
     )
 }
@@ -39,16 +74,32 @@ const ItemButton = styled.button`
 
     .label {
         padding-top: var(--space-2);
+        text-align: left;
+        flex: 1;
     }
 
     :focus{
         background: var(--color-neutral-gray-200);
     }
 
+    input {
+        width: 100%;
+        border: none;
+        color: var(--color-gray-800);
+        font-size: var(--font-16);
+
+        :focus{ 
+            outline: none;
+            border: 1px solid var(--color-orange-300);
+            border-radius: 4px;
+        }
+    }
+
     /* Creation */
     ${props => props.create && css`
         color: var(--color-orange-500);;
     `}
+    /* flex: 1; */
 `;
 
 const ButtonIcon = styled.img`
@@ -58,4 +109,26 @@ const ButtonIcon = styled.img`
     ${props => props.create && css`
         stroke: var(--color-orange-500);
     `}
-`
+`;
+
+const Actions = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    height: 100%;
+
+    .action {
+        width: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        cursor: pointer;
+
+        margin-right: var(--space-8);
+        :last-child{
+            margin-right: 0;
+        }
+    }
+`;

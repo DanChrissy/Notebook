@@ -87,7 +87,7 @@ const Content = ({note = {}}) => {
     //         [name]: value
     //     })
     // }
-    const getNotebook = (noteId) => notebooks.find(notebook => notebook?.notes.includes(noteId));
+    const getNotebook = (noteId) => notebooks.find(notebook => notebook?.notes || [].includes(noteId));
     const getBreadCrumbHistory = () => {
         const noteObj = notesSelectors.selectById(store.getState(), note);
         const notebookObj = note && getNotebook(note);

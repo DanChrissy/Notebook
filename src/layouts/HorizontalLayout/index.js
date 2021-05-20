@@ -10,15 +10,15 @@ import { getBookmarks, setBookmarks } from "../../store/bookmarksStoreOLD";
 import { useDispatch, useSelector } from "react-redux";
 import { notesSelectors } from "../../store/notesStore";
 import store from "../../store";
-import { notebooksSelectors } from "../../store/notebooksStore";
+import { addNotebook, notebooksSelectors } from "../../store/notebooksStore";
 import { bookmarksSelectors } from "../../store/bookmarksStore";
 
 const HorizontalLayout = () => {
     const dispatch = useDispatch();
 
     const notes = notesSelectors.selectAll(store.getState());
-    const notebooks = notebooksSelectors.selectAll(store.getState());
-    const bookmarks = bookmarksSelectors.selectAll(store.getState());
+    // const notebooks = notebooksSelectors.selectAll(store.getState());
+    // const bookmarks = bookmarksSelectors.selectAll(store.getState());
 
     useEffect(() => {
         // console.log('Notes: ', notes)
@@ -62,7 +62,9 @@ const HorizontalLayout = () => {
     }
 
     const handleOpenCreationOption = () => {
-        setOpenCreationModal(true);
+        // setOpenCreationModal(true);
+        dispatch(addNotebook({name: 'New Notebook'}))
+        setPageState({...pageState, loading: true});
     };
 
     return (

@@ -56,11 +56,20 @@ Taking notes is a great way to make sure we keep track of our thoughts or rememb
  
 
 ## TODO
-- [ ] Create a form
-- [ ] Store new notes
-- [ ] List notes
-    - [ ] Add Folders
-- [ ] Add tags or categories
-- [ ] Add note search
-- [ ] Add note network 
-- [ ] Dark Theme
+- [ ] List notes, notebooks, bookmarks
+- [ ] Note Feature
+    - [ ] Removal of note
+    - [ ] Creating on new note
+    - [ ] Adding tag
+    - [ ] Adding bookmark
+- [ ] Notebook Features
+    - [ ] Removal of note book
+    - [ ] Creation of new note book
+    - [ ] Edit Notebook
+
+- [ ] Other Features
+    - [ ] WYSIWYG
+    - [ ] Roam Searching
+    - [ ] Theming
+        - [ ] Dark
+        - [ ] Light
