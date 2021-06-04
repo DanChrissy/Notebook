@@ -21,7 +21,7 @@ const HorizontalLayout = () => {
     // const bookmarks = bookmarksSelectors.selectAll(store.getState());
 
     useEffect(() => {
-        // console.log('Notes: ', notes)
+        console.log('Notes: ', notes)
     }, [notes])
     const modalRef = useRef();
     
@@ -79,6 +79,8 @@ const HorizontalLayout = () => {
                     />
                     <Content
                         note={selectedNoteId}
+                        setSelectedNoteId={setSelectedNoteId}
+                        notebook={selectedNotebookId}
                     />
                     {(modalOpen || creationModalOpen) && 
                         <Modal>

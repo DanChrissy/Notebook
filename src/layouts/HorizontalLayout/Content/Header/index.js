@@ -3,9 +3,11 @@ import styled, { css } from 'styled-components';
 import Breadcrumbs from '../../../../components/Breadcrumb';
 import { ReactComponent as Bookmark} from '../../../../assets/svg/favourite.svg';
 import { ReactComponent as More} from '../../../../assets/svg/more-horizontal.svg';
+import { ReactComponent as Waste} from '../../../../assets/svg/waste.svg';
 import { getIsBookmark } from '..';
+import Dropdown from '../../../../components/Dropdown';
 
-export default function Header({ breadCrumbHistory = {}, isBookmark = true, toggleBookMark = () => {} }) {
+export default function Header({ breadCrumbHistory = {}, isBookmark = true, toggleBookMark = () => {}, onRemoveNote = () => {} }) {
     return (
         <HeaderWrapper>
             <HeaderContainer>
@@ -13,7 +15,11 @@ export default function Header({ breadCrumbHistory = {}, isBookmark = true, togg
                     <BookmarkIcon isBookmark={isBookmark} onClick={() => breadCrumbHistory.note && toggleBookMark()}/>
                     <Breadcrumbs breadCrumbs={breadCrumbHistory}/>
                 </BreadcrumbsContainer>
-                <MoreIcon/>
+                <Waste
+                    stroke="var(--color-orange-800)"
+                    style={{paddingRight: 'var(--space-16)', cursor: 'pointer'}}
+                    onClick={onRemoveNote}
+                />
             </HeaderContainer>
         </HeaderWrapper>
     )
@@ -48,4 +54,15 @@ const BookmarkIcon = styled(Bookmark)`
 
 const MoreIcon = styled(More)`
     stroke: var(--color-gray-500);
+`;
+
+const Actions = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    .action {
+        display: flex;
+        flex-direction: row;
+
+    }
 `;

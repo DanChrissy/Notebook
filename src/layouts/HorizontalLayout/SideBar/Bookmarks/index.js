@@ -17,7 +17,7 @@ const Bookmarks = ({ handleSelectBookmark}) => {
                     const note = notesSelectors.selectById(store.getState(), bookmark?.note);
                     return (
                         <Bookmark
-                            key={index}
+                            key={index * Math.random() + new Date().getTime()}
                             name={note?.title}
                             handleSelectBookmark={() => handleSelectBookmark(note?.id)}
                         />

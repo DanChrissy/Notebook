@@ -3,10 +3,11 @@ import styled, {css} from 'styled-components';
 import { HeaderInput, MuliLineInput, SubHeader} from './noteInputs';
 import { Space } from '../Space';
 import Input from '../Input';
-import { notesSelectors, updateNote } from '../../store/notesStore';
+import { addNote, notesSelectors, updateNote } from '../../store/notesStore';
 import {PageContext} from '../../contexts/PageContext';
 import store from '../../store';
 import { useDispatch } from 'react-redux';
+import Modal from '../Modal';
 
 export default function Note({note, handleUpdateNoteValues = () => {}}) {
     const dispatch = useDispatch();
@@ -14,16 +15,25 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
     const [noteValues, setNotesValues] = useState({});
     const { pageState, setPageState } = useContext(PageContext);
 
-    useEffect(() => {
+    // TODO: Creating note - save to unspecified notebook initially (gives the user opportunity to associate with a notebook later)
+    
+    useEffect(() => {  
         setNotesValues({...noteObj});
+        if (!note) {
+            dispatch(addNote({}))
+            console.log("Add new note");
+        }
     }, [note])
 
     useEffect(() => {
-        dispatch(updateNote({
-            id: note,
-            changes: {...noteValues}
-        }))
-        setPageState({...pageState, loading: true});
+        if (note) {
+            console.log("Updating note: ", note);
+            dispatch(updateNote({
+                id: note,
+                changes: {...noteValues}
+            }))
+            setPageState({...pageState, loading: true});
+        }
     } ,[noteValues]);
 
     const updateNoteFields = (e, name) => {
@@ -72,7 +82,7 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
                         placeholder="Add some details..."
                     />
                 </Body>
-                
+              
             </NoteContainer>
         </NoteWrapper>
     )

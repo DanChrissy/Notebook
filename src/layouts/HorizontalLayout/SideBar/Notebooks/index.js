@@ -20,6 +20,8 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     const [selectedNotebook, setSelectedNotebook] = useState();
     const [notebookNotes, setNotebookNNotes] = useState([]);
 
+    // TODO: Create unspecifed notebook for notes not associated with a particular note
+
     useEffect(() => {
         console.log("Update");
         let notebookNotes = [];
@@ -61,6 +63,8 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
         // Get notes via notes id in notebook
         // Use remove many selector in notes
     }
+
+    console.log('Notebook notes: ', notebookNotes);
     
     return (
         <NotebooksWrapper>
@@ -76,7 +80,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                 {notebooks.map((notebook,index) => {
                     return (
                         <Dropdown
-                            key={index}
+                            key={index * Math.random() + new Date().getTime()}
                             trigger={
                                 <Notebook 
                                     key={index} 
@@ -87,7 +91,8 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                                 />
                             }
                         >
-                            {notebookNotes.map((note, index) => {
+                            {
+                                notebookNotes.length > 0 ? notebookNotes.map((note, index) => {
                                 return (
                                     <NoteOption
                                         key={index}
@@ -95,7 +100,8 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                                         onClick={() => handleSelectNote(note?.id)}
                                     />
                                 )
-                            })}
+                                }) : null
+                            }
                         </Dropdown>
                     )
                 })}

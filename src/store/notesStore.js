@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, current } from "@reduxjs/toolkit";
 import PageLoader from "./helpers";
 
 export const notesAdapter = createEntityAdapter();
@@ -11,7 +11,12 @@ const NOTES_SLICE = createSlice({
             notesAdapter.setAll(state, action.payload);
             state.loading = false;
         },
-        addNote: notesAdapter.addOne,
+        addNote: (state, action) => {
+            const nextId = current(state).ids.slice(-1)[0] + 1;
+            const updatedNewNote = {id: nextId, ...action?.payload};
+            console.log("Note to add: ", updatedNewNote);
+            notesAdapter.addOne(state, updatedNewNote);
+        },
         updateNote(state, update) {
             notesAdapter.updateOne(state, update);
         },

@@ -56,17 +56,17 @@ Taking notes is a great way to make sure we keep track of our thoughts or rememb
  
 
 ## TODO
-- [ ] List notes, notebooks, bookmarks
+- [x] List notes, notebooks, bookmarks
 - [ ] Note Feature
     - [ ] Removal of note
     - [ ] Creating on new note
     - [ ] Adding tag
-    - [ ] Adding bookmark
+    - [x] Adding bookmark
 - [ ] Notebook Features
-    - [ ] Removal of note book
-    - [ ] Creation of new note book
-    - [ ] Edit Notebook
-
+    - [x] Removal of note book
+    - [x] Creation of new note book
+    - [x] Edit Notebook
+    - [ ] Create 'Unspecified' notebook
 - [ ] Other Features
     - [ ] WYSIWYG
     - [ ] Roam Searching
