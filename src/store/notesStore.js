@@ -12,10 +12,10 @@ const NOTES_SLICE = createSlice({
             state.loading = false;
         },
         addNote: (state, action) => {
-            const nextId = current(state).ids.slice(-1)[0] + 1;
-            const updatedNewNote = {id: nextId, ...action?.payload};
-            console.log("Note to add: ", updatedNewNote);
-            notesAdapter.addOne(state, updatedNewNote);
+            // const nextId = current(state).ids.slice(-1)[0] + 1;
+            // const updatedNewNote = {id: nextId, ...action?.payload};
+            // console.log("Note to add: ", updatedNewNote);
+            notesAdapter.addOne(state, action?.payload);
         },
         updateNote(state, update) {
             notesAdapter.updateOne(state, update);

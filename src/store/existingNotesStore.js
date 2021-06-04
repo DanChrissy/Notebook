@@ -10,6 +10,7 @@ const EXISTING_SLICE = createSlice({
             unspecifiedAdapter.setAll(state, action.payload);
         },
         addExistingNote: (state, action) => {
+            console.log('Exisitng Note: ', action.payload);
             unspecifiedAdapter.addOne(state, action.payload);
         },
         updateExistingNote: unspecifiedAdapter.updateOne,

@@ -25,7 +25,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     const [unspecifiedNotes, setUnSpecifiedNotes] = useState([]);
 
     // TODO: Create unspecifed notebook for notes not associated with a particular note
-    console.log('Unspecified: ', exisitngNotes);
+    console.log('Unspecified: ', exisitngNotes, notes);
     useEffect(() => {
         console.log("Update");
         let notebookNotes = [];
@@ -51,7 +51,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
             )
         })
         setUnSpecifiedNotes([...noteObjArray]);
-    }, [exisitngNotes])
+    }, [exisitngNotes, notes])
 
     useEffect(() => {
         console.log("Notebooks: ", notebooks);

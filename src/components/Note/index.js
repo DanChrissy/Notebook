@@ -8,11 +8,13 @@ import {PageContext} from '../../contexts/PageContext';
 import store from '../../store';
 import { useDispatch } from 'react-redux';
 import Modal from '../Modal';
+import { addExistingNote } from '../../store/existingNotesStore';
 
 export default function Note({note, handleUpdateNoteValues = () => {}}) {
     const dispatch = useDispatch();
     const noteObj = notesSelectors.selectById(store.getState(), note);
     const [noteValues, setNotesValues] = useState({});
+    const [nextNoteId, setNextNoteId] = useState();
     const { pageState, setPageState } = useContext(PageContext);
 
     // TODO: Creating note - save to unspecified notebook initially (gives the user opportunity to associate with a notebook later)
@@ -20,8 +22,11 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
     useEffect(() => {  
         setNotesValues({...noteObj});
         if (!note) {
-            dispatch(addNote({}))
-            console.log("Add new note");
+            const notes = notesSelectors.selectAll(store.getState());
+            const nextNote = notes.slice(-1)[0].id + 1;
+            dispatch(addNote({id: nextNote}));
+            dispatch(addExistingNote({id: nextNote}));
+            setNextNoteId(nextNote);
         }
     }, [note])
 
@@ -32,8 +37,14 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
                 id: note,
                 changes: {...noteValues}
             }))
-            setPageState({...pageState, loading: true});
+        } else {
+            dispatch(updateNote({
+                id: nextNoteId,
+                changes: {...noteValues}
+            }))
         }
+        setPageState({...pageState, loading: true});
+
     } ,[noteValues]);
 
     const updateNoteFields = (e, name) => {
