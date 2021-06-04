@@ -77,19 +77,20 @@ export default function Note({note, handleUpdateNoteValues = () => {}}) {
                         value={body}
                         // onChange={(e) => handleUpdateNoteValues(e, 'body')}
                         onChange={(e) => updateNoteFields(e, 'body')}
-                        rows={30}
+                        rows={20}
                         styleProps={{fontSize: 'var(--font-20)'}}
                         placeholder="Add some details..."
                     />
                 </Body>
-              
+            
             </NoteContainer>
         </NoteWrapper>
     )
 }
 
 const NoteWrapper = styled.div`
-    height: 100%;
+    /* height: 100%; */
+    flex: 1;
     width: 100%;
 `;
 

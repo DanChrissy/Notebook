@@ -89,10 +89,14 @@ const ContentWrapper = styled.div`
 `;
 
 const ContentContainer = styled.div`
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    width: inherit;
+    /* width: 100%; */
     background-color: white;
     padding-left: var(--space-40);
     padding-right: var(--space-40);
-    padding-top: 2.5rem;
+
 `;

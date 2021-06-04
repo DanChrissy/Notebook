@@ -34,6 +34,7 @@ const HeaderContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    padding-top: 2.5rem;
     padding-bottom: var(--space-16);
     border-bottom: 1px solid var(--color-gray-300);
 `;
