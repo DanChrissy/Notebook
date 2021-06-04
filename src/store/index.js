@@ -15,11 +15,13 @@ import storage from 'redux-persist/lib/storage'
 import notebooksReducer from './notebooksStore';
 import bookmarksRedurer from './bookmarksStore';
 import notesReducer from './notesStore';
+import unspecifiedNotesReducer from './existingNotesStore';
 
 const rootReducer = combineReducers({
     notebooks: notebooksReducer,
     bookmarks: bookmarksRedurer,
     notes: notesReducer,
+    unspecifiedNotes: unspecifiedNotesReducer
 })
 
 const persistConfig = {

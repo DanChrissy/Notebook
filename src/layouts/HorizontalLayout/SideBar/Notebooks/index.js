@@ -10,15 +10,19 @@ import store from "../../../../store";
 import { notesSelectors } from "../../../../store/notesStore";
 import Dropdown, {Option} from "../../../../components/Dropdown";
 import NotebooksList from "./NotebooksList";
+import { unSpecifiedNotesSelectors } from "../../../../store/existingNotesStore";
 
 const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     const dispatch = useDispatch();
     const notebooks = notebooksSelectors.selectAll(store.getState());
+    const unSpecifiedNotes = unSpecifiedNotesSelectors.selectAll(store.getState());
+
     const reverseNotebooks = [...notebooks].reverse();
     const notes = notesSelectors.selectAll(store.getState());
 
     const [selectedNotebook, setSelectedNotebook] = useState();
     const [notebookNotes, setNotebookNNotes] = useState([]);
+    const [unspecifiedNotes, setUnSpecifiedNotes] = useState([]);
 
     // TODO: Create unspecifed notebook for notes not associated with a particular note
 
@@ -38,6 +42,10 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
         setNotebookNNotes(notebookNotes)
 
     }, [selectedNotebook, notes])
+
+    useEffect(() => {
+        let exisitngNotes = [];
+    }, [notes])
 
     useEffect(() => {
         console.log("Notebooks: ", notebooks);
@@ -77,40 +85,85 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                     handleRemoveNotebok={handleRemoveNotebok}
                     handleSelectNote={handleSelectNote}
                 /> */}
+                <NotebookView
+                    key={Math.random() + new Date().getTime()}
+                    name="Unspecified Notes"
+                    handleSelectNote={handleSelectNote}
+                    notebookNotes={unspecifiedNotes}
+                    hasActions={false}
+                />
                 {notebooks.map((notebook,index) => {
                     return (
-                        <Dropdown
+                        <NotebookView
                             key={index * Math.random() + new Date().getTime()}
-                            trigger={
-                                <Notebook 
-                                    key={index} 
-                                    name={notebook?.name}
-                                    handleSelectNotebook={() => handleNotebook(notebook?.id)}
-                                    handleEditNotebok={(value) => handleEditNotebok(notebook?.id, value)}
-                                    handleRemoveNotebok={() => handleRemoveNotebok(notebook?.id)}
-                                />
-                            }
-                        >
-                            {
-                                notebookNotes.length > 0 ? notebookNotes.map((note, index) => {
-                                return (
-                                    <NoteOption
-                                        key={index}
-                                        option={note.title}
-                                        onClick={() => handleSelectNote(note?.id)}
-                                    />
-                                )
-                                }) : null
-                            }
-                        </Dropdown>
+                            name={notebook?.name}
+                            handleEditNotebok={(value) => handleEditNotebok(notebook?.id, value)}
+                            handleRemoveNotebok={() => handleRemoveNotebok(notebook?.id)}
+                            handleSelectNote={handleSelectNote}
+                            handleSelectNotebook={() => handleNotebook(notebook?.id)}
+                            notebookNotes={notebookNotes}
+                        />
+                        // <Dropdown
+                        //     key={index * Math.random() + new Date().getTime()}
+                        //     trigger={
+                        //         <Notebook 
+                        //             key={index} 
+                        //             name={notebook?.name}
+                        //             handleSelectNotebook={() => handleNotebook(notebook?.id)}
+                        //             handleEditNotebok={(value) => handleEditNotebok(notebook?.id, value)}
+                        //             handleRemoveNotebok={() => handleRemoveNotebok(notebook?.id)}
+                        //         />
+                        //     }
+                        // >
+                        //     {
+                        //         notebookNotes.length > 0 ? notebookNotes.map((note, index) => {
+                        //         return (
+                        //             <NoteOption
+                        //                 key={index}
+                        //                 option={note.title}
+                        //                 onClick={() => handleSelectNote(note?.id)}
+                        //             />
+                        //         )
+                        //         }) : null
+                        //     }
+                        // </Dropdown>
                     )
                 })}
+    
             </NotebooksContainer>
         </NotebooksWrapper>
     )
 }
 
 export default Notebooks;
+
+const NotebookView = ({name, handleSelectNotebook, handleEditNotebok, handleRemoveNotebok, notebookNotes, handleSelectNote, hasActions}) => {
+    return (
+        <Dropdown
+            trigger={
+                <Notebook 
+                    actions={hasActions}
+                    name={name}
+                    handleSelectNotebook={handleSelectNotebook}
+                    handleEditNotebok={handleEditNotebok}
+                    handleRemoveNotebok={handleRemoveNotebok}
+                />
+            }
+        >
+            {
+                notebookNotes.length > 0 ? notebookNotes.map((note, index) => {
+                return (
+                    <NoteOption
+                        key={index}
+                        option={note.title}
+                        onClick={() => handleSelectNote(note?.id)}
+                    />
+                )
+                }) : null
+            }
+        </Dropdown>
+    )
+}
 
 const NoteOption = ({option, onClick}) => {
     return (

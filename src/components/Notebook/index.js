@@ -3,12 +3,12 @@ import styled from "styled-components";
 import ListItem from "../ListItem";
 import folderIcon from '../../assets/svg/folder.svg';
 
-const Notebook = ({name = "", handleSelectNotebook, handleEditNotebok = () => {}, handleRemoveNotebok = () => {} }) => {
+const Notebook = ({name = "", handleSelectNotebook, handleEditNotebok = () => {}, handleRemoveNotebok = () => {}, actions = true }) => {
 
     return (
         <NotebookWrapper>
             <ListItem
-                actions
+                actions={actions}
                 icon={folderIcon}
                 name={name}
                 onClick={handleSelectNotebook}
