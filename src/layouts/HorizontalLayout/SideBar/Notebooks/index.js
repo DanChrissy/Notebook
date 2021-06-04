@@ -10,22 +10,22 @@ import store from "../../../../store";
 import { notesSelectors } from "../../../../store/notesStore";
 import Dropdown, {Option} from "../../../../components/Dropdown";
 import NotebooksList from "./NotebooksList";
-import { unSpecifiedNotesSelectors } from "../../../../store/existingNotesStore";
+import { setExistingNotes, unSpecifiedNotesSelectors } from "../../../../store/existingNotesStore";
 
 const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     const dispatch = useDispatch();
     const notebooks = notebooksSelectors.selectAll(store.getState());
-    const unSpecifiedNotes = unSpecifiedNotesSelectors.selectAll(store.getState());
 
     const reverseNotebooks = [...notebooks].reverse();
     const notes = notesSelectors.selectAll(store.getState());
+    const exisitngNotes = unSpecifiedNotesSelectors.selectAll(store.getState());
 
     const [selectedNotebook, setSelectedNotebook] = useState();
     const [notebookNotes, setNotebookNNotes] = useState([]);
     const [unspecifiedNotes, setUnSpecifiedNotes] = useState([]);
 
     // TODO: Create unspecifed notebook for notes not associated with a particular note
-
+    console.log('Unspecified: ', exisitngNotes);
     useEffect(() => {
         console.log("Update");
         let notebookNotes = [];
@@ -44,8 +44,14 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     }, [selectedNotebook, notes])
 
     useEffect(() => {
-        let exisitngNotes = [];
-    }, [notes])
+        const noteObjArray = [];
+        exisitngNotes.map(noteId => {
+            return (
+                noteObjArray.push(notesSelectors.selectById(store.getState(), noteId))
+            )
+        })
+        setUnSpecifiedNotes([...noteObjArray]);
+    }, [exisitngNotes])
 
     useEffect(() => {
         console.log("Notebooks: ", notebooks);
@@ -64,6 +70,12 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
 
     const handleRemoveNotebok = id => {
         console.log('Remove id:', id);
+        
+        const notebookObj = notebooksSelectors.selectById(store.getState(), id);
+        const notebookObjNotes = notebookObj?.notes || []; 
+        
+        // Add notes to unspecified 'folder'
+        dispatch(setExistingNotes([...notebookObjNotes]))
         // Removes the notebook without removing the notes
         dispatch(removeNotebook(id));
 
@@ -155,7 +167,7 @@ const NotebookView = ({name, handleSelectNotebook, handleEditNotebok, handleRemo
                 return (
                     <NoteOption
                         key={index}
-                        option={note.title}
+                        option={note?.title || ''}
                         onClick={() => handleSelectNote(note?.id)}
                     />
                 )

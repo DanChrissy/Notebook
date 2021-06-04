@@ -15,6 +15,7 @@ import store from "../../../store";
 import { notebooksSelectors, updateNotebook } from "../../../store/notebooksStore";
 import { notesSelectors, removeNote } from "../../../store/notesStore";
 import {PageContext} from '../../../contexts/PageContext';
+import { unSpecifiedNotesSelectors } from "../../../store/existingNotesStore";
 
 
 const Content = ({note, setSelectedNoteId, notebook}) => {
@@ -22,10 +23,21 @@ const Content = ({note, setSelectedNoteId, notebook}) => {
 
     const bookmarks = bookmarksSelectors.selectAll(store.getState());
     const notebooks = notebooksSelectors.selectAll(store.getState());
+    const unspecifiedNotes = unSpecifiedNotesSelectors.selectAll(store.getState());
+
     const { pageState, setPageState } = useContext(PageContext);
 
 
-    const getNotebook = (noteId) => notebooks.find(notebook => (notebook?.notes || []).includes(noteId));
+    const getNotebook = (noteId) => {
+        let noteBookForNote = {};
+        noteBookForNote = notebooks.find(notebook => (notebook?.notes || []).includes(noteId));
+        
+        if (!noteBookForNote){
+            noteBookForNote = { name: 'Unspecified Notebook'};
+        }
+        return noteBookForNote
+    };
+
     const getBreadCrumbHistory = () => {
         const noteObj = notesSelectors.selectById(store.getState(), note);
         const notebookObj = note && getNotebook(note);
