@@ -14,6 +14,7 @@ const EXISTING_SLICE = createSlice({
         },
         updateExistingNote: unspecifiedAdapter.updateOne,
         removeExisitngNote(state, action){
+            console.log('Action: ',action.payload);
             unspecifiedAdapter.removeOne(state, action.payload)
         },
         resetUnspecified: () => unspecifiedAdapter.getInitialState(),

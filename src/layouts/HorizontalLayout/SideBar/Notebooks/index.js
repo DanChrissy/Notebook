@@ -47,7 +47,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
         const noteObjArray = [];
         exisitngNotes.map(noteId => {
             return (
-                noteObjArray.push(notesSelectors.selectById(store.getState(), noteId))
+                noteObjArray.push(notesSelectors.selectById(store.getState(), noteId?.id))
             )
         })
         setUnSpecifiedNotes([...noteObjArray]);
@@ -73,9 +73,13 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
         
         const notebookObj = notebooksSelectors.selectById(store.getState(), id);
         const notebookObjNotes = notebookObj?.notes || []; 
+
+        const updateNoteObj = notebookObjNotes.map(noteid => { return ({id: noteid})});
+
+        console.log('updateNoteObj: ', updateNoteObj);
         
         // Add notes to unspecified 'folder'
-        dispatch(setExistingNotes([...notebookObjNotes]))
+        dispatch(setExistingNotes([...updateNoteObj]))
         // Removes the notebook without removing the notes
         dispatch(removeNotebook(id));
 

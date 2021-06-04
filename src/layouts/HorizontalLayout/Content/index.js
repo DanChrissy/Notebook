@@ -15,7 +15,7 @@ import store from "../../../store";
 import { notebooksSelectors, updateNotebook } from "../../../store/notebooksStore";
 import { notesSelectors, removeNote } from "../../../store/notesStore";
 import {PageContext} from '../../../contexts/PageContext';
-import { unSpecifiedNotesSelectors } from "../../../store/existingNotesStore";
+import { removeExisitngNote, unSpecifiedNotesSelectors } from "../../../store/existingNotesStore";
 
 
 const Content = ({note, setSelectedNoteId, notebook}) => {
@@ -63,10 +63,13 @@ const Content = ({note, setSelectedNoteId, notebook}) => {
         dispatch(removeNote(note));
         const selectedNotebook = getNotebook(note);
         const selectedBookmark = bookmarks.find(bookmark => bookmark.note === note);
-        const filterNotebookNotes = selectedNotebook.notes.filter(noteId => note !== noteId);
-
-       selectedBookmark && dispatch(removeBookmark(selectedBookmark.id));
-       dispatch(updateNotebook({id: selectedNotebook.id, changes: {notes: filterNotebookNotes}}));
+        if (selectedNotebook.name === 'Unspecified Notebook') {
+            dispatch(removeExisitngNote(note));
+        } else {
+            const filterNotebookNotes = selectedNotebook.notes.filter(noteId => note !== noteId);
+            dispatch(updateNotebook({id: selectedNotebook.id, changes: {notes: filterNotebookNotes}}));
+        }
+        selectedBookmark && dispatch(removeBookmark(selectedBookmark.id));
     }
 
     const breadCrumbHistory = getBreadCrumbHistory();
