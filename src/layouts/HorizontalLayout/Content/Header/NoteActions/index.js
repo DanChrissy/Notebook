@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, {  } from "styled-components";
 import { ReactComponent as Arrow } from  '../../../../../assets/svg/down-arrow.svg';
+import { ReactComponent as TickIcon } from "../../../../../assets/svg/tick.svg";
 import Dropdown from '../../../../../components/Dropdown';
 import ListItem from '../../../../../components/ListItem';
 
@@ -9,6 +10,7 @@ import store from "../../../../../store";
 import { notebooksSelectors, removeNotebook, updateNotebook } from "../../../../../store/notebooksStore";
 import { addExistingNote, unSpecifiedNotesSelectors, removeExisitngNote } from '../../../../../store/existingNotesStore';
 import { addTag, tagsSelectors, updateTag } from '../../../../../store/tagsStore';
+import Input from '../../../../../components/Input';
 
 const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () => {}}) => {
     const dispatch = useDispatch();
@@ -21,6 +23,8 @@ const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () =>
     const [notebookOptions, setNotebookOptions] = useState(notebooks);
     const [noteTags, setNoteTags] = useState([]);
     const [tagsSelection, setSelectionTags] = useState([]);
+    const [showTagInput, setShowTagInput] = useState(false);
+    const [newTag, setNewTag] = useState({});
 
     useEffect(() => {
         setAssignedNotebook(notebook);
@@ -87,6 +91,20 @@ const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () =>
 
         dispatch(updateTag({id: tag.id, changes: { notes: updatedTags}}));
         setNoteTags([...updatedTags]);
+    }
+
+    const handleAddTag = () => {
+        setShowTagInput(true);
+    }
+
+    const handleTagNameChange = (e) => {
+        const {value = ''} = e.target;
+        setNewTag({...newTag, title: value});
+    }
+
+    const onAddNewTag = () => {
+        dispatch(addTag(newTag))
+        setShowTagInput(false);
     }
     
     return (
@@ -161,7 +179,28 @@ const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () =>
                             </Tag>
                         )
                     })}
+                    <button
+                        disabled={showTagInput}
+                        className="add-tag"
+                        onClick={() => handleAddTag()}
+                    >
+                        +1 tag
+                    </button>
                 </TagsContainer>
+                {
+                    showTagInput &&
+                    <div className="tag-input">
+                        <Input
+                            type="string"
+                            onChange={handleTagNameChange}
+                        />
+                        <TickIcon
+                            fill="var(--color-orange-600)"
+                            style={{paddingLeft: 'var(--space-18', marginBottom: '2px'}}
+                            onClick={() => onAddNewTag()}
+                        />
+                    </div>
+                }
 
                 <Footer>
                     <button
@@ -181,7 +220,7 @@ export default NoteActions;
 
 const ActionsWrapper = styled.div`
     /* min-height: 5rem; */
-    min-width: 30rem;
+    width: 30rem;
 `;
 
 const ActionsContainer = styled.div`
@@ -196,6 +235,12 @@ const ActionsContainer = styled.div`
 
     box-shadow: 0px 20px 25px rgba(0, 0, 0, 0.1), 0px 10px 10px rgba(0, 0, 0, 0.04);
     border-radius: 0.5rem;
+
+    .tag-input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
 `;
 
 const AssignNotebook = styled.div`
@@ -238,8 +283,31 @@ const TagsContainer = styled.div`
     height: 100%;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    /* gap: var(--space-10); */
+    row-gap: var(--space-10);
 
     margin-bottom: var(--space-14);
+
+    .add-tag {
+        margin: 0;
+        padding: 0 var(--space-10);
+        outline: none;
+        background: transparent;
+        border: 0;
+
+        /* border: 1px solid var(--color-orange-500); */
+        box-sizing: border-box;
+        border-radius: 0.25rem;
+
+        cursor: pointer;
+        color: var(--color-orange-500);
+
+
+        /* &:hover {
+            background: var(--color-orange-100);
+        } */
+    }
     
 `;
 
