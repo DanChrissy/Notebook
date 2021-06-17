@@ -93,14 +93,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
     return (
         <NotebooksWrapper>
             <NotebooksContainer>
-                {/* <NotebooksList
-                    notebooks={notebooks}
-                    notebookNotes={notebookNotes}
-                    handleEditNotebok={handleEditNotebok}
-                    handleNotebook={handleNotebook}
-                    handleRemoveNotebok={handleRemoveNotebok}
-                    handleSelectNote={handleSelectNote}
-                /> */}
+
                 <NotebookView
                     key={Math.random() + new Date().getTime()}
                     name="Unspecified Notes"
@@ -108,7 +101,7 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                     notebookNotes={unspecifiedNotes}
                     hasActions={false}
                 />
-                {notebooks.map((notebook,index) => {
+                {reverseNotebooks.map((notebook,index) => {
                     return (
                         <NotebookView
                             key={index * Math.random() + new Date().getTime()}
@@ -119,30 +112,6 @@ const Notebooks = ({ handleSelectNotebook, handleSelectNote}) => {
                             handleSelectNotebook={() => handleNotebook(notebook?.id)}
                             notebookNotes={notebookNotes}
                         />
-                        // <Dropdown
-                        //     key={index * Math.random() + new Date().getTime()}
-                        //     trigger={
-                        //         <Notebook 
-                        //             key={index} 
-                        //             name={notebook?.name}
-                        //             handleSelectNotebook={() => handleNotebook(notebook?.id)}
-                        //             handleEditNotebok={(value) => handleEditNotebok(notebook?.id, value)}
-                        //             handleRemoveNotebok={() => handleRemoveNotebok(notebook?.id)}
-                        //         />
-                        //     }
-                        // >
-                        //     {
-                        //         notebookNotes.length > 0 ? notebookNotes.map((note, index) => {
-                        //         return (
-                        //             <NoteOption
-                        //                 key={index}
-                        //                 option={note.title}
-                        //                 onClick={() => handleSelectNote(note?.id)}
-                        //             />
-                        //         )
-                        //         }) : null
-                        //     }
-                        // </Dropdown>
                     )
                 })}
     

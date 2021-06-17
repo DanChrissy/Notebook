@@ -20,6 +20,7 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, hand
     return (
         <SideBarWrapper>
             <SideBarContainer>
+                
                 <SideBarHeader>
                     <div className="profile">
                         <Profile/>
@@ -51,11 +52,18 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, hand
                             <ListItem icon={trashIcon} name="Trash"/>
                         </span>
                         <ListItem
+                            create
                             icon={createIcon}
-                            name="Add Note or Notebook"
-                            create 
+                            name="Add Notebook" 
                             // onClick={handleCreateNote}
                             onClick={handleOpenCreationOption}
+                        />
+                        <ListItem
+                            create
+                            icon={createIcon}
+                            name="Add Note" 
+                            onClick={handleCreateNote}
+                            // onClick={handleOpenCreationOption}
                         />
 
                         {/* <Dropdown
@@ -68,11 +76,11 @@ const SideBar = ({handleCreateNote, handleSelectNotebook, handleSelectNote, hand
                                 <Option option="Notebook"/>
 
                             </>
-                        </Dropdown> */}
+                        </Dropdown>  */}
                     </div>
                     
                 </SideBarContent>
-                
+                 
                 <SideBarFooter/>
 
             </SideBarContainer>
@@ -162,4 +170,5 @@ const SideBarFooter = styled.div`
     bottom: 0;
     height: 6rem;
     width: 100%;
+
 `;

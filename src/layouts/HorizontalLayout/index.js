@@ -50,7 +50,8 @@ const HorizontalLayout = () => {
 
     const handleCreateNote = () => {
         // setMddalOpen(true);
-        // setSelectedNoteId();
+        setSelectedNoteId();
+        
     }
 
     const handleSelectNotebook = id => {
@@ -109,4 +110,6 @@ const LayoutContainer = styled.div`
 
     height: 100%;
     width: 100%;
+
+    background: red;
 `

@@ -27,6 +27,8 @@ const Content = ({note, setSelectedNoteId, notebook}) => {
 
     const { pageState, setPageState } = useContext(PageContext);
 
+    console.log('Notebook: ', notebook);
+
 
     const getNotebook = (noteId) => {
         let noteBookForNote = {};
