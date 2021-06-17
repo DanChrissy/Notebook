@@ -56,7 +56,7 @@ const Trigger = styled.div`
 `;
 
 const DropdownContainer = styled.div`
-    height: 4rem;
+    min-height: 4rem;
     width: 15rem;
     padding: 0.5rem 0.8755rem;
     outline: none;
@@ -64,6 +64,7 @@ const DropdownContainer = styled.div`
     /* transform-origin: top; */
     position: absolute;
     left: 1rem;
+    right: 0;
     top: 2.125rem;
     /* Merge */
     color: var(--color-white);

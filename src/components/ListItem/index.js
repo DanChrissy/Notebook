@@ -6,7 +6,7 @@ import { ReactComponent as WasteIcon } from "../../assets/svg/waste.svg";
 import { ReactComponent as EditIcon } from "../../assets/svg/edit.svg";
 import { ReactComponent as TickIcon } from "../../assets/svg/tick.svg";
 
-const ListItem = ({icon = FileIcon, name = "", onClick = () => {}, ...defaultProps}) => {
+const ListItem = ({icon = FileIcon, hasIcon= true, name = "", onClick = () => {}, ...defaultProps}) => {
     const { create, actions = false, handleRemove = () => {}, handleEdit = () => {} } = defaultProps;
     
     const [isEditting, setIsEditting] = useState(false);
@@ -24,7 +24,7 @@ const ListItem = ({icon = FileIcon, name = "", onClick = () => {}, ...defaultPro
 
     return (
         <ItemButton type="button" onClick={() => onClick()} {...defaultProps}>
-            <ButtonIcon src={icon} {...defaultProps}/>
+            {hasIcon && <ButtonIcon src={icon} {...defaultProps}/>}
             { !isEditting ? <span className="label">{value}</span> :
                 <input
                     value={value}

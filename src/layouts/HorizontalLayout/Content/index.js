@@ -5,6 +5,7 @@ import Breadcrumbs from '../../../components/Breadcrumb';
 import HoverFormatter from "../../../components/HoverFormatter";
 import Note from "../../../components/Note";
 import Header from "./Header";
+import Modal from "../../../components/Modal";
 import { Space } from "../../../components/Space";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookmarks } from "../../../store/bookmarksStoreOLD";
@@ -16,6 +17,7 @@ import { notebooksSelectors, updateNotebook } from "../../../store/notebooksStor
 import { notesSelectors, removeNote } from "../../../store/notesStore";
 import {PageContext} from '../../../contexts/PageContext';
 import { removeExisitngNote, unSpecifiedNotesSelectors } from "../../../store/existingNotesStore";
+import NoteActions from "./Header/NoteActions";
 
 
 const Content = ({note, setSelectedNoteId, notebook}) => {
@@ -26,6 +28,7 @@ const Content = ({note, setSelectedNoteId, notebook}) => {
     const unspecifiedNotes = unSpecifiedNotesSelectors.selectAll(store.getState());
 
     const { pageState, setPageState } = useContext(PageContext);
+    const [actionsModalOpen, setActionsModalOpen] = useState(false);
 
     console.log('Notebook: ', notebook);
 
@@ -74,6 +77,14 @@ const Content = ({note, setSelectedNoteId, notebook}) => {
         selectedBookmark && dispatch(removeBookmark(selectedBookmark.id));
     }
 
+    const onOpenActionsModal = () => {
+        setActionsModalOpen(true);
+    }
+
+    const onCloseModal = () => {
+        setActionsModalOpen(false);
+    }
+
     const breadCrumbHistory = getBreadCrumbHistory();
     
     return (
@@ -85,11 +96,21 @@ const Content = ({note, setSelectedNoteId, notebook}) => {
                     isBookmark={!!getIsBookmark(note)}
                     toggleBookMark={toggleBookMark}
                     onRemoveNote={handleRemoveNote}
+                    onOpenActionsModal={onOpenActionsModal}
                 />
                 <Space height="var(--space-40)"/>
                 <Note
                     note={note}
                 />
+                {actionsModalOpen &&
+                    <Modal>
+                        <NoteActions
+                            note={note}
+                            notebook={getNotebook(note)}
+                            onCloseModal={onCloseModal}
+                        />
+                    </Modal>
+                }
             </ContentContainer>
         </ContentWrapper>
     )

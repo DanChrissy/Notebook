@@ -7,7 +7,7 @@ import { ReactComponent as Waste} from '../../../../assets/svg/waste.svg';
 import { getIsBookmark } from '..';
 import Dropdown from '../../../../components/Dropdown';
 
-export default function Header({ breadCrumbHistory = {}, isBookmark = true, toggleBookMark = () => {}, onRemoveNote = () => {} }) {
+export default function Header({ breadCrumbHistory = {}, isBookmark = true, toggleBookMark = () => {}, onRemoveNote = () => {}, onOpenActionsModal = () => {} }) {
     return (
         <HeaderWrapper>
             <HeaderContainer>
@@ -15,11 +15,17 @@ export default function Header({ breadCrumbHistory = {}, isBookmark = true, togg
                     <BookmarkIcon isBookmark={isBookmark} onClick={() => breadCrumbHistory.note && toggleBookMark()}/>
                     <Breadcrumbs breadCrumbs={breadCrumbHistory}/>
                 </BreadcrumbsContainer>
-                <Waste
-                    stroke="var(--color-orange-800)"
-                    style={{paddingRight: 'var(--space-16)', cursor: 'pointer'}}
-                    onClick={onRemoveNote}
-                />
+                <Actions>
+                    <Waste
+                        stroke="var(--color-orange-800)"
+                        style={{paddingRight: 'var(--space-16)', cursor: 'pointer'}}
+                        onClick={onRemoveNote}
+                    />
+                    <More
+                        onClick={onOpenActionsModal}
+                    />
+                </Actions>
+                
             </HeaderContainer>
         </HeaderWrapper>
     )
@@ -59,11 +65,8 @@ const MoreIcon = styled(More)`
 
 const Actions = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
-    .action {
-        display: flex;
-        flex-direction: row;
+    align-items: center;
 
-    }
 `;

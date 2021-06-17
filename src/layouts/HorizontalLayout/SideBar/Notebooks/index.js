@@ -166,6 +166,7 @@ const NotebooksWrapper = styled.div`
 const NotebooksContainer = styled.div`
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 `;
 
 const StyledOption = styled.div`
