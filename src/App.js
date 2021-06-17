@@ -11,7 +11,9 @@ import { useEffect, useLayoutEffect } from 'react';
 import notebooksData from './mockData/notebooksData.json';
 import notesData from './mockData/notes.json';
 import bookmarksData from './mockData/bookmarks.json';
+import tagsData from './mockData/tags.json';
 import store from './store';
+import { setTags } from './store/tagsStore';
 
 function App() {
   // Load data into store
@@ -19,11 +21,13 @@ function App() {
   const notebooks = notebooksData.notebooks;
   const bookmarks = bookmarksData.bookmarks;
   const notes = notesData.notes;
+  const tags = tagsData.tags;
 
   useEffect(() => {
     dispatch(setBookmarks(bookmarks));
     dispatch(setNotebooks(notebooks));
     dispatch(setNotes(notes));
+    dispatch(setTags(tags));
   },[]);
 
   const shouldRender = store.getState().notes.notes.length > 0;

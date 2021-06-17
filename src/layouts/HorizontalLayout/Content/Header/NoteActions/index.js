@@ -8,18 +8,30 @@ import ListItem from '../../../../../components/ListItem';
 import store from "../../../../../store";
 import { notebooksSelectors, removeNotebook, updateNotebook } from "../../../../../store/notebooksStore";
 import { addExistingNote, unSpecifiedNotesSelectors, removeExisitngNote } from '../../../../../store/existingNotesStore';
+import { addTag, tagsSelectors, updateTag } from '../../../../../store/tagsStore';
 
 const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () => {}}) => {
     const dispatch = useDispatch();
     const notebooks = notebooksSelectors.selectAll(store.getState());
+    const tags = tagsSelectors.selectAll(store.getState());
     
     console.log('Notebooks: ', notebooks, notebook);
+    console.log('Tags:', tags);
     const [assignedNotebook, setAssignedNotebook] = useState({});
     const [notebookOptions, setNotebookOptions] = useState(notebooks);
+    const [noteTags, setNoteTags] = useState([]);
+    const [tagsSelection, setSelectionTags] = useState([]);
 
     useEffect(() => {
         setAssignedNotebook(notebook);
     }, []);
+
+    useEffect(() => {
+        const filterTags = tags.filter(tag => tag?.notes?.includes(note));
+        const selectionTags = tags.filter(tag => !tag?.notes?.includes(note));
+        setNoteTags(filterTags);
+        setSelectionTags(selectionTags);
+    }, [tags])
 
     useEffect(() => {
         setNotebookOptions(notebooks);
@@ -56,6 +68,26 @@ const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () =>
         }
         
     }
+
+    const handleAddNoteToTag = (tag) => {
+
+        let updatedTags = [];
+        if (tag.notes) {
+            updatedTags = [...tag?.notes, note];
+        } else {
+            updatedTags = [note];
+        }
+        dispatch(updateTag({id: tag.id, changes: { notes: updatedTags}}));
+        setNoteTags([...updatedTags])
+    };
+
+    const handleRemoveNoteFromTag = (tag) => {
+        let updatedTags = [...tag.notes];
+        updatedTags = [...tag.notes].filter(tagNote => tagNote !== note);
+
+        dispatch(updateTag({id: tag.id, changes: { notes: updatedTags}}));
+        setNoteTags([...updatedTags]);
+    }
     
     return (
         <ActionsWrapper>
@@ -63,7 +95,7 @@ const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () =>
                 {isInUndefined &&
                     (
                         <AssignNotebook>
-                            <p>Assign Notebook:</p>
+                            <p>Re-Assign Notebook:</p>
                             <Dropdown
                                 trigger={
                                     <div className="dropdown-trigger">
@@ -97,8 +129,38 @@ const NoteActions = ({note, notebook, isInUndefined = true, onCloseModal = () =>
                     )
                 }
 
+                <SectionTitle>NOTE TAGS:</SectionTitle>
+
                 <TagsContainer>
-                    TAGS
+                    {noteTags.map((tag, index) => {
+                        const { title = ''} = tag;
+                        return (
+                            title &&
+                            <Tag
+                                key={Math.random() + index}
+                                onClick={() => handleRemoveNoteFromTag(tag)}
+                            >
+                                {title}
+                            </Tag>
+                        )
+                    })}
+                </TagsContainer>
+
+                <SectionTitle>ALL TAGS:</SectionTitle>
+
+                <TagsContainer>
+                    {tagsSelection.map((tag, index) => {
+                        const { title = ''} = tag;
+                        return (
+                            title &&
+                            <Tag
+                                key={Math.random() + index}
+                                onClick={() => handleAddNoteToTag(tag)}
+                            >
+                                {title}
+                            </Tag>
+                        )
+                    })}
                 </TagsContainer>
 
                 <Footer>
@@ -141,6 +203,8 @@ const AssignNotebook = styled.div`
     flex-direction: row;
     align-items: center;
 
+    margin-bottom: var(--space-20);
+
     .title {}
 
     .dropdown-trigger {
@@ -172,7 +236,11 @@ const AssignNotebook = styled.div`
 const TagsContainer = styled.div`
     flex: 1;
     height: 100%;
-    background: lightblue;
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: var(--space-14);
+    
 `;
 
 const Footer = styled.div`
@@ -202,4 +270,42 @@ const Footer = styled.div`
         }
 
     }
+`;
+
+const SectionTitle = styled.div`
+    width: 100%;
+    padding-bottom: var(--space-10);
+
+    color: var(--color-orange-800);
+    border-bottom: 1px solid var(--color-orange-800);
+
+    margin-bottom: var(--space-10);
+
+`;
+
+const Tag = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    max-width: 8rem;
+    height: 2rem;
+    padding: 0 var(--space-10);
+
+    border: 1px solid var(--color-orange-400);
+    color: var(--color-orange-300);
+    box-sizing: border-box;
+    border-radius: 1rem;
+    background: var(--color-orange-100);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    cursor: pointer;
+    margin-right: var(--space-4);
+    :last-of-type {
+        margin-right: 0;
+    }
+
 `;
