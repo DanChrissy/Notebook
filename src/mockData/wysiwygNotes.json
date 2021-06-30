@@ -1,0 +1,34 @@
+{
+    "notes" : [
+        {
+            "id": 1,
+            "title":"The Obstacle is The Way",
+            "content":"<p>My favourite book of all time. It's amazing</p>"
+        },
+        {
+            "id": 2,
+            "title": "Carrot Cake",
+            "content":"<p>Best served with icing on top</p>"
+        },
+        {
+            "id": 3,
+            "title": "Busy Day",
+            "content":"<p>So many stuff to do</p><br/><ul><li>Buy a new car</li></ul>"
+        },
+        {
+            "id": 4,
+            "title": "Book Club",
+            "content":"<p>Book club always starts at 6</p>"
+        },
+        {
+            "id": 5,
+            "title": "Bahamas Trip",
+            "content":"<p>So excited!! Going with the besties</p>"
+        },
+        {
+            "id": 6,
+            "title": "NYC Trip",
+            "content":"<p>Have a lot to get done before trip</p>"
+        }
+    ]
+}

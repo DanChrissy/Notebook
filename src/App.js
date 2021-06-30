@@ -12,15 +12,17 @@ import notebooksData from './mockData/notebooksData.json';
 import notesData from './mockData/notes.json';
 import bookmarksData from './mockData/bookmarks.json';
 import tagsData from './mockData/tags.json';
+import notesWysiwygData from './mockData/wysiwygNotes.json';
 import store from './store';
 import { setTags } from './store/tagsStore';
+import WYSIWYG from './components/WYSIWYG';
 
 function App() {
   // Load data into store
   const dispatch = useDispatch();
   const notebooks = notebooksData.notebooks;
   const bookmarks = bookmarksData.bookmarks;
-  const notes = notesData.notes;
+  const notes = notesWysiwygData.notes;
   const tags = tagsData.tags;
 
   useEffect(() => {
@@ -35,6 +37,7 @@ function App() {
   return (
     <div className="App">
       {shouldRender && <HorizontalLayout/>}
+      {/* <WYSIWYG/> */}
     </div>
   );
 }
