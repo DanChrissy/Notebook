@@ -32,11 +32,12 @@ function App() {
     dispatch(setTags(tags));
   },[]);
 
-  const shouldRender = store.getState().notes.notes.length > 0;
-  
+  const shouldRender = store.getState().notes.length > 0;
+
   return (
     <div className="App">
-      {shouldRender && <HorizontalLayout/>}
+      {/* {shouldRender && <HorizontalLayout/>} */}
+      <HorizontalLayout/>
       {/* <WYSIWYG/> */}
     </div>
   );

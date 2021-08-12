@@ -2,7 +2,7 @@
   "name": "notebook-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://DanChrissy.github.io/Notebook",
+  "homepage": "http://danchrissy.github.io/Notebook",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^28.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
@@ -25,7 +25,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build -o github",
+    "help": "gh-pages --help"
   },
   "eslintConfig": {
     "extends": [
